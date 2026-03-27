@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SOC Transport">
+<meta name="theme-color" content="#0F1629">
+<title>SOC Transport</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overscroll-behavior:none;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F0F4F8;color:#0F1629;font-size:15px;-webkit-font-smoothing:antialiased;}
+#app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
+.hdr{background:#0F1629;color:#fff;padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.hdr-title{font-size:16px;font-weight:700;}
+.hdr-sub{font-size:12px;color:#475569;margin-top:1px;}
+.hdr-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0;}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #E2E8F0;display:flex;padding:6px 0 calc(6px + env(safe-area-inset-bottom));z-index:30;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;padding:4px;cursor:pointer;border:none;background:transparent;color:#94A3B8;font-size:10px;font-weight:700;gap:3px;position:relative;}
+.nb.on{color:#2563EB;}
+.nb svg{width:22px;height:22px;}
+.nb-dot::after{content:'';position:absolute;top:3px;right:calc(50% - 14px);width:7px;height:7px;background:#EC4899;border-radius:50%;border:2px solid #fff;}
+.scroll{flex:1;overflow-y:auto;padding-bottom:80px;}
+.sec{padding:16px;}
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(15,22,41,.07);}
+.card-title{font-size:13px;font-weight:700;margin-bottom:12px;}
+.met3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.met4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.met{background:#fff;border-radius:12px;padding:12px 8px;text-align:center;box-shadow:0 1px 4px rgba(15,22,41,.07);}
+.met .v{font-size:22px;font-weight:800;}
+.met .l{font-size:10px;font-weight:700;color:#94A3B8;margin-top:2px;text-transform:uppercase;}
+.bdg{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;line-height:1.4;}
+.bl{background:#CCFBF1;color:#0F766E;}.br{background:#DCFCE7;color:#15803D;}.bp{background:#FCE7F3;color:#BE185D;}
+.bg{background:#F1F5F9;color:#64748B;}.bo{background:#DCFCE7;color:#15803D;}
+.ba{background:#DBEAFE;color:#1D4ED8;}.bb{background:#FEF3C7;color:#B45309;}.bc{background:#EDE9FE;color:#7C3AED;}
+.inp{width:100%;padding:12px 14px;border:1.5px solid #E2E8F0;border-radius:12px;font-size:14px;color:#0F1629;background:#fff;-webkit-appearance:none;outline:none;}
+.inp:focus{border-color:#2563EB;}
+.lbl{font-size:12px;font-weight:700;color:#64748B;margin-bottom:5px;}
+.ig{margin-bottom:12px;}
+.irow{display:flex;gap:8px;}
+.btn{width:100%;padding:14px;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;}
+.btn:active{opacity:.82;}.btn:disabled{opacity:.3;cursor:default;}
+.btn-p{background:#2563EB;color:#fff;}.btn-d{background:#0F1629;color:#fff;}
+.btn-o{background:#fff;color:#0F1629;border:1.5px solid #E2E8F0;}
+.btn-pk{background:#fff;color:#BE185D;border:1.5px solid #FBCFE8;}
+.btn-sm{padding:9px 14px;font-size:13px;border-radius:10px;width:auto;}
+.shift-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.sc{border:2px solid #E2E8F0;border-radius:14px;padding:12px 8px;text-align:center;cursor:pointer;background:#fff;}
+.sc .sn{font-size:15px;font-weight:800;}.sc .st{font-size:10px;color:#94A3B8;margin-top:2px;font-weight:600;}
+.sc.onA{border-color:#2563EB;background:#EFF6FF;}.sc.onB{border-color:#D97706;background:#FFFBEB;}.sc.onC{border-color:#7C3AED;background:#F5F3FF;}
+.leg{border:1.5px solid #E2E8F0;border-radius:14px;padding:14px;margin-bottom:10px;background:#fff;}
+.leg-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.leg-name{font-size:14px;font-weight:700;}
+.choices{display:flex;gap:6px;}
+.cb{flex:1;padding:10px 4px;border:2px solid #E2E8F0;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:#64748B;text-align:center;}
+.cb.cL{border-color:#10B981;background:#ECFDF5;color:#065F46;}
+.cb.cO{border-color:#EF4444;background:#FEF2F2;color:#991B1B;}
+.cb.cB{border-color:#F59E0B;background:#FFFBEB;color:#92400E;}
+.drv-box{background:#F8FAFC;border-radius:10px;padding:12px;margin-top:10px;}
+.drv-title{font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.refund-note{font-size:12px;color:#065F46;background:#ECFDF5;border-radius:8px;padding:7px 10px;margin-top:8px;font-weight:600;}
+.fixed-note{font-size:12px;color:#64748B;background:#F8FAFC;border-radius:8px;padding:8px 10px;}
+.divider{height:1px;background:#F1F5F9;margin:12px 0;}
+.tog-row{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0;}
+.tog-lbl{font-size:13px;font-weight:700;color:#BE185D;}
+.tog{width:44px;height:26px;border-radius:13px;background:#E2E8F0;position:relative;transition:background .2s;flex-shrink:0;}
+.tog.on{background:#EC4899;}
+.tog-th{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.18);}
+.tog.on .tog-th{transform:translateX(18px);}
+.unsch-box{background:#FDF4FF;border:1.5px solid #E879F9;border-radius:12px;padding:12px;margin-top:10px;}
+.chart-wrap{height:80px;display:flex;align-items:flex-end;gap:3px;}
+.chart-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;}
+.chart-bar{border-radius:3px 3px 0 0;min-height:3px;}
+.chart-lbl{font-size:9px;color:#CBD5E1;text-align:center;margin-top:3px;}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;}
+.leg-it{display:flex;align-items:center;gap:5px;font-size:11px;color:#64748B;font-weight:600;}
+.leg-dot{width:8px;height:8px;border-radius:2px;}
+.he{padding:13px 0;border-bottom:1px solid #F1F5F9;}
+.he:last-child{border-bottom:none;}
+.he-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;}
+.he-date{font-size:13px;font-weight:700;}
+.he-bdgs{display:flex;flex-wrap:wrap;gap:5px;}
+.tag-back{font-size:10px;font-weight:700;background:#FEF3C7;color:#B45309;padding:2px 6px;border-radius:8px;}
+.roster{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(15,22,41,.07);}
+.rr{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid #F1F5F9;gap:12px;}
+.rr:last-child{border-bottom:none;}
+.rav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.rname{font-size:13px;font-weight:700;}.rsub{font-size:11px;color:#94A3B8;}
+.rbdgs{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;margin-left:auto;}
+.spc{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid #EC4899;box-shadow:0 1px 4px rgba(15,22,41,.07);}
+.spc.rev{border-left-color:#10B981;}
+.recon-row{display:flex;align-items:center;padding:13px 0;border-bottom:1px solid #F1F5F9;gap:12px;}
+.recon-row:last-child{border-bottom:none;}
+.rn .n{font-size:15px;font-weight:800;}.rn .l{font-size:10px;color:#94A3B8;font-weight:700;text-transform:uppercase;}
+.mi{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff;border-radius:14px;margin-bottom:8px;cursor:pointer;box-shadow:0 1px 4px rgba(15,22,41,.07);}
+.mi-left{display:flex;align-items:center;gap:12px;}
+.mi-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.mi-lbl{font-size:14px;font-weight:700;}.mi-sub{font-size:12px;color:#94A3B8;}
+.login{min-height:100vh;background:#0F1629;display:flex;flex-direction:column;}
+.login-top{padding:48px 24px 28px;}
+.login-logo{font-size:13px;font-weight:700;color:#2563EB;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.login-title{font-size:30px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:6px;}
+.login-sub{font-size:14px;color:#64748B;}
+.login-body{background:#F0F4F8;border-radius:24px 24px 0 0;flex:1;padding:24px;overflow-y:auto;}
+.login-sec{font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.ng{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px;}
+.nc{background:#fff;border:2px solid #E2E8F0;border-radius:14px;padding:12px 10px;display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nc:active{opacity:.8;}.nc.sel{border-color:#2563EB;background:#EFF6FF;}
+.nc-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.nc-name{font-size:13px;font-weight:700;}.nc-role{font-size:11px;color:#94A3B8;font-weight:600;}
+.pin-screen{position:fixed;inset:0;background:#0F1629;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;padding:24px;max-width:480px;margin:0 auto;}
+.pin-who{font-size:14px;color:#64748B;font-weight:600;margin-bottom:6px;}
+.pin-title{font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;}
+.pin-hint{font-size:13px;color:#475569;margin-bottom:28px;text-align:center;line-height:1.5;}
+.pin-dots{display:flex;gap:16px;margin-bottom:36px;}
+.pd{width:14px;height:14px;border-radius:50%;border:2px solid #334155;background:transparent;transition:all .15s;}
+.pd.f{background:#2563EB;border-color:#2563EB;}.pd.e{background:#EF4444;border-color:#EF4444;}
+.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:264px;margin-bottom:20px;}
+.pk{height:70px;border-radius:16px;border:none;font-size:24px;font-weight:700;color:#fff;background:#1E293B;cursor:pointer;}
+.pk:active{background:#334155;}.pk.del{font-size:18px;}.pk.emp{background:transparent;pointer-events:none;}
+.pin-err{font-size:13px;color:#EF4444;font-weight:700;margin-top:8px;}
+.pin-link{font-size:13px;color:#475569;cursor:pointer;text-decoration:underline;margin-top:10px;}
+.pin-back{font-size:13px;color:#475569;cursor:pointer;margin-top:14px;}
+.av-blue{background:#DBEAFE;color:#1D4ED8;}.av-teal{background:#CCFBF1;color:#0F766E;}
+.av-green{background:#DCFCE7;color:#15803D;}.av-amber{background:#FEF3C7;color:#B45309;}
+.av-coral{background:#FEE2E2;color:#9F1239;}.av-purple{background:#EDE9FE;color:#7C3AED;}
+.av-pink{background:#FCE7F3;color:#BE185D;}.av-navy{background:#E0E7FF;color:#3730A3;}
+.info-bar{border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;font-weight:600;line-height:1.5;}
+.err-bar{background:#FEE2E2;border-radius:10px;padding:10px 14px;font-size:13px;color:#B91C1C;font-weight:600;margin-bottom:12px;}
+.empty{text-align:center;padding:40px 20px;color:#94A3B8;font-size:13px;font-weight:600;}
+.loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:#94A3B8;font-size:13px;}
+.spin{width:18px;height:18px;border:2.5px solid #E2E8F0;border-top-color:#2563EB;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#0F1629;color:#fff;padding:11px 20px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;z-index:200;}
+.toast.show{opacity:1;}
+.flex-bet{display:flex;justify-content:space-between;align-items:center;}
+</style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════════════════════╗
+     ║  CONFIG — only section you ever need to edit        ║
+     ╚══════════════════════════════════════════════════════╝ -->
+<script>
+const CONFIG = {
+  supabaseUrl: 'https://tgqgdihkdopkczzmyuhx.supabase.co',
+  supabaseKey: 'sb_publishable_yi072PkuL-yqvZUjR_PwEg_1tytaXQp',
+  defaultPin:  '1234',
+  // Managers enter this to reset any forgotten PIN back to 1234
+  // Change this to something private
+  resetPin:    '9999',
+
+  staff: [
+    // Managers
+    { id:1,  name:'Sarvish',              initials:'SV', color:'blue',   role:'manager' },
+    { id:2,  name:'Nabeel',               initials:'NR', color:'teal',   role:'manager' },
+    { id:3,  name:'Ali',                  initials:'AL', color:'green',  role:'manager' },
+    { id:4,  name:'Azaghen',              initials:'AZ', color:'amber',  role:'manager' },
+    { id:5,  name:'Fardeen',              initials:'FD', color:'purple', role:'manager' },
+    // Analysts
+    { id:6,  name:'Girish Soodelah',      initials:'GS', color:'coral',  role:'analyst' },
+    { id:7,  name:'Malika Daby',          initials:'MD', color:'blue',   role:'analyst' },
+    { id:8,  name:'Khevin Sookun',        initials:'KS', color:'teal',   role:'analyst' },
+    { id:9,  name:'Davesh Khaytoo',       initials:'DK', color:'purple', role:'analyst' },
+    { id:10, name:'Hishaam Nubheebucus',  initials:'HN', color:'amber',  role:'analyst' },
+    // Add more: copy a line above and give a new unique id number
+  ],
+};
+</script>
+
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const SHIFTS={
+  A:{label:'Shift A',time:'06:00–14:00',legs:[{id:'in',label:'IN',time:'06:00',provided:true},{id:'out',label:'OUT',time:'14:00',provided:false}]},
+  B:{label:'Shift B',time:'14:00–22:00',legs:[{id:'in',label:'IN',time:'14:00',provided:false},{id:'out',label:'OUT',time:'22:00',provided:true}]},
+  C:{label:'Shift C',time:'22:00–06:00',legs:[{id:'in',label:'IN',time:'22:00',provided:true},{id:'out',label:'OUT',time:'06:00',provided:true}]},
+};
+
+const LS={
+  pins(){try{return JSON.parse(localStorage.getItem('soc_pins')||'{}')}catch{return{}}},
+  getPin(id){return this.pins()[id]||CONFIG.defaultPin},
+  setPin(id,p){const o=this.pins();o[id]=p;localStorage.setItem('soc_pins',JSON.stringify(o))},
+  resetPin(id){this.setPin(id,CONFIG.defaultPin)},
+  getSess(){try{const s=JSON.parse(localStorage.getItem('soc_sess')||'null');if(!s)return null;if(Date.now()-s.ts>30*24*3600*1000){this.clearSess();return null}return s}catch{return null}},
+  setSess(id){localStorage.setItem('soc_sess',JSON.stringify({id,ts:Date.now()}))},
+  clearSess(){localStorage.removeItem('soc_sess')},
+};
+
+const db=supabase.createClient(CONFIG.supabaseUrl,CONFIG.supabaseKey);
+
+const S={
+  screen:'login',user:null,selId:null,
+  pinBuf:'',pinErr:false,pinMode:'login',pinNew:'',pinTarget:null,
+  sTab:'declare',mTab:'today',
+  date:tod(),shift:null,choices:{},
+  dIn:'',pIn:'',dOut:'',pOut:'',
+  uIn:false,uOut:false,
+  udIn:{time:'',driver:'',plate:'',reason:''},
+  udOut:{time:'',driver:'',plate:'',reason:''},
+  spShow:false,spForm:{},editEvId:null,
+  decls:[],events:[],loading:false,err:null,
+};
+
+function tod(){return new Date().toISOString().split('T')[0]}
+function isRef(c){return['own','bus','auto'].includes(c)}
+function fmtD(d){return new Date(d+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}
+function fmtM(){return new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'})}
+function byId(id){return CONFIG.staff.find(s=>s.id===id)}
+function avc(c){return'av-'+(c||'blue')}
+function isMgr(u){return u&&u.role==='manager'}
+function anas(){return CONFIG.staff.filter(s=>s.role==='analyst')}
+function mgrs(){return CONFIG.staff.filter(s=>s.role==='manager')}
+function uDecls(uid){return S.decls.filter(d=>d.analyst_id===uid).sort((a,b)=>b.date.localeCompare(a.date))}
+function dFor(uid,date){return S.decls.find(d=>d.analyst_id===uid&&d.date===date)}
+function uEvs(uid){return S.events.filter(e=>e.analyst_id===uid&&!e.is_inline).sort((a,b)=>b.date.localeCompare(a.date))}
+function pCnt(){return S.events.filter(e=>!e.reviewed&&!e.is_inline).length}
+
+const I={
+  cal:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  chart:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  star:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  user:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+  list:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>`,
+  bell:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
+  doc:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+};
+
+async function dbLoad(){
+  S.loading=true;render();
+  try{
+    const[d,e]=await Promise.all([db.from('declarations').select('*'),db.from('special_events').select('*')]);
+    if(d.error)throw d.error;
+    if(e.error)throw e.error;
+    S.decls=d.data||[];S.events=e.data||[];S.err=null;
+  }catch(ex){S.err='Could not load data. Check your internet connection.';console.error(ex);}
+  S.loading=false;render();
+}
+
+async function dbSaveDecl(row){
+  const{data,error}=await db.from('declarations').upsert(row,{onConflict:'analyst_id,date'}).select();
+  if(error){toast('Save failed — try again');console.error(error);return false;}
+  S.decls=S.decls.filter(d=>!(d.analyst_id===row.analyst_id&&d.date===row.date));
+  if(data)S.decls.push(...data);
+  return true;
+}
+
+async function dbSaveEv(row){
+  const{data,error}=await db.from('special_events').insert(row).select();
+  if(error){toast('Save failed — try again');console.error(error);return false;}
+  if(data)S.events.push(...data);
+  return true;
+}
+
+async function dbUpdEv(id,changes){
+  const{error}=await db.from('special_events').update(changes).eq('id',id);
+  if(error){toast('Update failed');return false;}
+  const ev=S.events.find(e=>e.id===id);
+  if(ev)Object.assign(ev,changes);
+  return true;
+}
+
+function render(){
+  const app=document.getElementById('app');
+  if(S.screen==='login'){app.innerHTML=rLogin();return;}
+  if(S.screen==='pin'){app.innerHTML=rPin();return;}
+  if(S.screen==='chg'){app.innerHTML=rChg();return;}
+  if(S.screen==='rst'){app.innerHTML=rRst();return;}
+  app.innerHTML=rApp();
+}
+
+function rLogin(){
+  const card=s=>`<div class="nc ${S.selId===s.id?'sel':''}" onclick="selU(${s.id})">
+    <div class="nc-av ${avc(s.color)}">${s.initials}</div>
+    <div><div class="nc-name">${s.name}</div><div class="nc-role">${s.role==='manager'?'Manager':'Analyst'}</div></div>
+  </div>`;
+  return`<div class="login"><div class="login-top">
+    <div class="login-logo">Emtel SOC</div>
+    <div class="login-title">SOC Transport</div>
+    <div class="login-sub">Select your name to sign in</div>
+  </div><div class="login-body">
+    <div class="login-sec">Managers</div><div class="ng">${mgrs().map(card).join('')}</div>
+    <div class="login-sec">Analysts</div><div class="ng">${anas().map(card).join('')}</div>
+  </div></div>`;
+}
+
+function selU(id){S.selId=id;S.pinBuf='';S.pinErr=false;S.pinMode='login';S.screen='pin';render();}
+
+function rPin(){
+  const u=byId(S.selId);
+  const dots=[0,1,2,3].map(i=>`<div class="pd ${i<S.pinBuf.length?'f':''} ${S.pinErr&&i<S.pinBuf.length?'e':''}"></div>`).join('');
+  const keys=[1,2,3,4,5,6,7,8,9,'','0','⌫'].map(k=>k===''?`<div class="pk emp"></div>`:`<button class="pk ${k==='⌫'?'del':''}" onclick="pK('${k}')">${k}</button>`).join('');
+  return`<div class="pin-screen">
+    <div class="pin-who">${u?.name||''}</div>
+    <div class="pin-title">Enter your PIN</div>
+    <div class="pin-hint">Default PIN is ${CONFIG.defaultPin}<br>if you haven't changed it yet</div>
+    <div class="pin-dots">${dots}</div>
+    <div class="pin-grid">${keys}</div>
+    ${S.pinErr?`<div class="pin-err">Incorrect PIN — try again</div>`:''}
+    <div class="pin-link" onclick="goRst(${S.selId})">Forgot PIN?</div>
+    <div class="pin-back" onclick="goLogin()">← Back</div>
+  </div>`;
+}
+
+function pK(k){
+  if(k==='⌫'){S.pinBuf=S.pinBuf.slice(0,-1);S.pinErr=false;render();return;}
+  if(S.pinBuf.length>=4)return;
+  S.pinBuf+=k;render();
+  if(S.pinBuf.length===4)setTimeout(chkPin,120);
+}
+
+function chkPin(){
+  if(S.pinBuf===LS.getPin(S.selId)){
+    S.user=byId(S.selId);LS.setSess(S.selId);
+    S.screen='app';S.pinBuf='';S.pinErr=false;dbLoad();
+  }else{
+    S.pinErr=true;setTimeout(()=>{S.pinBuf='';S.pinErr=false;render();},800);render();
+  }
+}
+
+function goLogin(){S.screen='login';S.selId=null;S.pinBuf='';S.pinErr=false;render();}
+
+function rChg(){
+  const step={old:['Verify current PIN','Enter your current PIN'],new:['Choose new PIN','Enter any 4-digit PIN'],cfm:['Confirm new PIN','Enter your new PIN again']};
+  const[title,hint]=step[S.pinMode]||step.old;
+  const buf=S.pinMode==='cfm'?S.pinNew:S.pinBuf;
+  const dots=[0,1,2,3].map(i=>`<div class="pd ${i<buf.length?'f':''} ${S.pinErr&&i<buf.length?'e':''}"></div>`).join('');
+  const keys=[1,2,3,4,5,6,7,8,9,'','0','⌫'].map(k=>k===''?`<div class="pk emp"></div>`:`<button class="pk ${k==='⌫'?'del':''}" onclick="cpK('${k}')">${k}</button>`).join('');
+  return`<div class="pin-screen">
+    <div class="pin-who">${S.user?.name}</div>
+    <div class="pin-title">${title}</div>
+    <div class="pin-hint">${hint}</div>
+    <div class="pin-dots">${dots}</div>
+    <div class="pin-grid">${keys}</div>
+    ${S.pinErr?`<div class="pin-err">${S.pinMode==='cfm'?'PINs do not match':'Incorrect PIN'}</div>`:''}
+    <div class="pin-back" onclick="canCP()">Cancel</div>
+  </div>`;
+}
+
+function cpK(k){
+  const isCfm=S.pinMode==='cfm';
+  if(k==='⌫'){if(isCfm)S.pinNew=S.pinNew.slice(0,-1);else S.pinBuf=S.pinBuf.slice(0,-1);S.pinErr=false;render();return;}
+  if(isCfm){if(S.pinNew.length>=4)return;S.pinNew+=k;}else{if(S.pinBuf.length>=4)return;S.pinBuf+=k;}
+  render();
+  if((isCfm?S.pinNew:S.pinBuf).length===4)setTimeout(stepCP,120);
+}
+
+function stepCP(){
+  if(S.pinMode==='old'){
+    if(S.pinBuf===LS.getPin(S.user.id)){S.pinMode='new';S.pinBuf='';S.pinErr=false;}
+    else{S.pinErr=true;setTimeout(()=>{S.pinBuf='';S.pinErr=false;render();},800);}
+  }else if(S.pinMode==='new'){S.pinMode='cfm';S.pinNew='';S.pinErr=false;}
+  else if(S.pinMode==='cfm'){
+    if(S.pinNew===S.pinBuf){LS.setPin(S.user.id,S.pinBuf);toast('PIN updated!');setTimeout(()=>{S.screen='app';S.pinBuf='';S.pinNew='';S.pinMode='login';render();},500);return;}
+    else{S.pinErr=true;setTimeout(()=>{S.pinNew='';S.pinErr=false;render();},800);}
+  }
+  render();
+}
+function canCP(){S.screen='app';S.pinBuf='';S.pinNew='';S.pinMode='login';S.pinErr=false;render();}
+
+function rRst(){
+  const tid=S.pinTarget||S.selId,target=byId(tid);
+  const dots=[0,1,2,3].map(i=>`<div class="pd ${i<S.pinBuf.length?'f':''} ${S.pinErr&&i<S.pinBuf.length?'e':''}"></div>`).join('');
+  const keys=[1,2,3,4,5,6,7,8,9,'','0','⌫'].map(k=>k===''?`<div class="pk emp"></div>`:`<button class="pk ${k==='⌫'?'del':''}" onclick="rpK('${k}')">${k}</button>`).join('');
+  return`<div class="pin-screen">
+    <div class="pin-who">Reset PIN for ${target?.name}</div>
+    <div class="pin-title">Manager override</div>
+    <div class="pin-hint">A manager enters the override PIN.<br>This resets ${target?.name}'s PIN to ${CONFIG.defaultPin}.</div>
+    <div class="pin-dots">${dots}</div>
+    <div class="pin-grid">${keys}</div>
+    ${S.pinErr?`<div class="pin-err">Incorrect override PIN</div>`:''}
+    <div class="pin-back" onclick="canRP()">Cancel</div>
+  </div>`;
+}
+
+function goRst(tid){S.pinTarget=tid;S.pinBuf='';S.pinErr=false;S.screen='rst';render();}
+function rpK(k){
+  if(k==='⌫'){S.pinBuf=S.pinBuf.slice(0,-1);S.pinErr=false;render();return;}
+  if(S.pinBuf.length>=4)return;
+  S.pinBuf+=k;render();
+  if(S.pinBuf.length===4)setTimeout(chkRP,120);
+}
+function chkRP(){
+  if(S.pinBuf===CONFIG.resetPin){
+    const tid=S.pinTarget||S.selId;LS.resetPin(tid);toast('PIN reset to '+CONFIG.defaultPin);
+    setTimeout(()=>{S.pinBuf='';S.pinTarget=null;S.screen=S.user?'app':'pin';render();},600);
+  }else{S.pinErr=true;setTimeout(()=>{S.pinBuf='';S.pinErr=false;render();},800);render();}
+}
+function canRP(){S.pinBuf='';S.pinErr=false;S.screen=S.user?'app':'pin';render();}
+
+function rApp(){
+  const u=S.user,tab=isMgr(u)?S.mTab:S.sTab;
+  const titles={declare:'Declare transport',history:'My history',special:'Special transport',account:'My account',today:"Today's log",recon:fmtM(),events:'Special events'};
+  const body=S.loading?`<div class="loading"><div class="spin"></div>Loading…</div>`
+    :S.err?`<div class="sec"><div class="err-bar">${S.err}</div><button class="btn btn-p" onclick="dbLoad()">Retry</button></div>`
+    :isMgr(u)?rMgr():rStaff();
+  const nav=isMgr(u)?rMNav():rSNav();
+  return`<div><div class="hdr">
+    <div><div class="hdr-title">${titles[tab]||'SOC Transport'}</div><div class="hdr-sub">${u?.name} · ${isMgr(u)?'Manager':'Analyst'}</div></div>
+    <div class="hdr-av ${avc(u?.color)}" onclick="goAcct()">${u?.initials}</div>
+  </div><div class="scroll">${body}</div>${nav}</div>`;
+}
+
+function rSNav(){
+  return`<div class="bnav">${[{k:'declare',l:'Declare',i:I.cal},{k:'history',l:'History',i:I.chart},{k:'special',l:'Special',i:I.star},{k:'account',l:'Me',i:I.user}]
+    .map(t=>`<button class="nb ${S.sTab===t.k?'on':''}" onclick="setST('${t.k}')">${t.i}<span>${t.l}</span></button>`).join('')}</div>`;
+}
+function rMNav(){
+  const pc=pCnt();
+  return`<div class="bnav">${[{k:'today',l:'Today',i:I.list},{k:'events',l:'Events',i:I.bell,d:pc>0},{k:'recon',l:'Month',i:I.doc},{k:'account',l:'Me',i:I.user}]
+    .map(t=>`<button class="nb ${S.mTab===t.k?'on':''} ${t.d?'nb-dot':''}" onclick="setMT('${t.k}')">${t.i}<span>${t.l}</span></button>`).join('')}</div>`;
+}
+
+function rStaff(){
+  if(S.sTab==='declare')return rDecl();
+  if(S.sTab==='history')return rHist();
+  if(S.sTab==='special')return rSpSt();
+  if(S.sTab==='account')return rAcct();
+  return'';
+}
+
+function rDecl(){
+  const uid=S.user.id,isToday=S.date===tod(),ex=dFor(uid,S.date);
+  return`<div class="sec">
+    <div class="ig"><div class="lbl">Date</div><div style="display:flex;gap:8px;">
+      <input type="date" class="inp" value="${S.date}" max="${tod()}" onchange="setDt(this.value)" style="flex:1;"/>
+      ${!isToday?`<button class="btn btn-o btn-sm" onclick="setDt('${tod()}')">Today</button>`:''}
+    </div></div>
+    ${!isToday?`<div style="background:#FEF3C7;border-radius:10px;padding:9px 12px;font-size:12px;font-weight:700;color:#92400E;margin-bottom:14px;">Logging for a past date — will be marked backdated</div>`:''}
+    ${S.err?`<div class="err-bar">${S.err}</div>`:''}
+    ${ex?rDone(ex):rDForm()}
+  </div>`;
+}
+
+function rDone(d){
+  const sh=SHIFTS[d.shift],L={logidis:'Logidis',own:'Own vehicle',bus:'Public bus',auto:'Public transport'};
+  return`<div style="background:#F0FDF4;border:2px solid #86EFAC;border-radius:16px;padding:18px;text-align:center;">
+    <div style="font-size:15px;font-weight:800;color:#15803D;margin-bottom:8px;">Already submitted</div>
+    <div style="font-size:13px;color:#166534;margin-bottom:12px;">${fmtD(d.date)}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+      <span class="bdg ${d.shift==='A'?'ba':d.shift==='B'?'bb':'bc'}">${d.shift} · ${sh?.time}</span>
+      ${d.leg_in?`<span class="bdg ${d.leg_in==='logidis'?'bl':'br'}">IN: ${L[d.leg_in]||d.leg_in}</span>`:''}
+      ${d.leg_out?`<span class="bdg ${d.leg_out==='logidis'?'bl':'br'}">OUT: ${L[d.leg_out]||d.leg_out}</span>`:''}
+    </div>
+    <div style="font-size:12px;color:#94A3B8;margin-top:12px;">To correct an entry, contact your manager</div>
+  </div>`;
+}
+
+function rDForm(){
+  let h=`<div class="lbl" style="margin-bottom:8px;">Your shift</div>
+    <div class="shift-grid">${['A','B','C'].map(k=>`<div class="sc ${S.shift===k?'on'+k:''}" onclick="setSh('${k}')"><div class="sn">Shift ${k}</div><div class="st">${SHIFTS[k].time}</div></div>`).join('')}</div>`;
+  if(S.shift){
+    h+=`<div class="lbl" style="margin-bottom:10px;">Your journeys</div>`;
+    SHIFTS[S.shift].legs.forEach(leg=>{h+=rLeg(leg);});
+    const need=SHIFTS[S.shift].legs.filter(l=>l.provided).length,done=Object.keys(S.choices).length,ok=done>=need;
+    h+=`<button class="btn btn-p ${ok?'':'disabled'}" ${ok?'':'disabled'} onclick="subD()" style="margin-top:4px;">${ok?'Submit declaration':'Complete all journey choices above'}</button>`;
+  }else h+=`<div class="empty">Select your shift above to continue</div>`;
+  return h;
+}
+
+function rLeg(leg){
+  const c=S.choices[leg.id],dv=leg.id==='in'?S.dIn:S.dOut,pv=leg.id==='in'?S.pIn:S.pOut;
+  const ut=leg.id==='in'?S.uIn:S.uOut,ud=leg.id==='in'?S.udIn:S.udOut;
+  let h=`<div class="leg"><div class="leg-h"><span class="leg-name">${leg.label} · ${leg.time}</span>
+    ${leg.provided?`<span class="bdg" style="background:#DCFCE7;color:#166534;font-size:10px;">Transport available</span>`:''}
+  </div>`;
+  if(leg.provided){
+    h+=`<div class="choices">${[{k:'logidis',l:'Logidis'},{k:'own',l:'Own vehicle'},{k:'bus',l:'Public bus'}].map(o=>
+      `<button class="cb ${c===o.k?o.k==='logidis'?'cL':o.k==='own'?'cO':'cB':''}" onclick="pick('${leg.id}','${o.k}')">${o.l}</button>`
+    ).join('')}</div>`;
+    if(c==='logidis')h+=`<div class="drv-box"><div class="drv-title">Logidis vehicle details</div>
+      <div class="irow">
+        <div style="flex:1;"><div class="lbl">Driver name</div><input class="inp" style="padding:9px 11px;font-size:13px;" placeholder="e.g. Jean-Pierre" value="${dv}" oninput="S.${leg.id==='in'?'dIn':'dOut'}=this.value"/></div>
+        <div style="flex:1;"><div class="lbl">Car plate</div><input class="inp" style="padding:9px 11px;font-size:13px;text-transform:uppercase;" placeholder="e.g. B 1234 X" value="${pv}" oninput="S.${leg.id==='in'?'pIn':'pOut'}=this.value.toUpperCase()"/></div>
+      </div></div>`;
+    if(c&&c!=='logidis')h+=`<div class="refund-note">Bus fare refund eligible for this leg</div>`;
+  }else{
+    h+=`<div class="fixed-note">No company transport scheduled for this leg</div>
+      <div class="refund-note">Bus fare refund eligible — auto-included</div>
+      <div class="divider"></div>
+      <div class="tog-row" onclick="togU('${leg.id}')">
+        <span class="tog-lbl">Company transport was provided today?</span>
+        <div class="tog ${ut?'on':''}"><div class="tog-th"></div></div>
+      </div>`;
+    if(ut)h+=`<div class="unsch-box">
+      <div style="font-size:11px;font-weight:700;color:#A21CAF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Unscheduled transport details</div>
+      <div class="ig"><div class="lbl">Actual time</div><input type="time" class="inp" style="padding:9px 11px;font-size:13px;" value="${ud.time||''}" onchange="setUD('${leg.id}','time',this.value)"/></div>
+      <div class="irow">
+        <div style="flex:1;" class="ig"><div class="lbl">Driver name</div><input class="inp" style="padding:9px 11px;font-size:13px;" placeholder="Optional" value="${ud.driver||''}" oninput="setUD('${leg.id}','driver',this.value)"/></div>
+        <div style="flex:1;" class="ig"><div class="lbl">Car plate</div><input class="inp" style="padding:9px 11px;font-size:13px;text-transform:uppercase;" placeholder="Optional" value="${ud.plate||''}" oninput="setUD('${leg.id}','plate',this.value.toUpperCase())"/></div>
+      </div>
+      <div class="ig"><div class="lbl">Reason</div><input class="inp" style="padding:9px 11px;font-size:13px;" placeholder="e.g. Heavy rain, cyclone warning…" value="${ud.reason||''}" oninput="setUD('${leg.id}','reason',this.value)"/>
+      <div style="font-size:11px;color:#94A3B8;margin-top:4px;">Manager may adjust wording</div></div>
+    </div>`;
+  }
+  return h+'</div>';
+}
+
+function rHist(){
+  const uid=S.user.id,hist=uDecls(uid);
+  const logT=hist.reduce((s,h)=>s+(h.leg_in==='logidis'?1:0)+(h.leg_out==='logidis'?1:0),0);
+  const refD=hist.filter(h=>isRef(h.leg_in)||isRef(h.leg_out)).length;
+  const c14=[...hist].slice(0,14).reverse();
+  const bars=c14.map(e=>{
+    const l=(e.leg_in==='logidis'?1:0)+(e.leg_out==='logidis'?1:0),r=(isRef(e.leg_in)?1:0)+(isRef(e.leg_out)?1:0);
+    const sp=S.events.some(s=>s.analyst_id===uid&&s.date===e.date),t=Math.max(l+r,1),lp=Math.round((l/t)*100);
+    return`<div class="chart-col"><div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:1px;">
+      ${l?`<div class="chart-bar" style="height:${lp}%;background:#10B981;"></div>`:''}
+      ${r?`<div class="chart-bar" style="height:${100-lp}%;background:#F59E0B;"></div>`:''}
+      ${sp?`<div style="height:3px;background:#EC4899;border-radius:0;"></div>`:''}
+    </div><div class="chart-lbl">${e.date.slice(8)}</div></div>`;
+  }).join('');
+  const L={logidis:'Logidis',own:'Own vehicle',bus:'Public bus',auto:'Public transport'};
+  const items=hist.length?hist.map(e=>{
+    const sh=SHIFTS[e.shift],hasR=isRef(e.leg_in)||isRef(e.leg_out);
+    const spd=S.events.filter(s=>s.analyst_id===uid&&s.date===e.date&&!s.is_inline);
+    const drv=e.leg_in==='logidis'&&(e.driver_name_in||e.car_plate_in)?`<div style="font-size:11px;color:#64748B;margin-top:4px;">${e.driver_name_in||''} ${e.car_plate_in?'· '+e.car_plate_in:''}</div>`:'';
+    return`<div class="he"><div class="he-row">
+      <div><div class="he-date">${fmtD(e.date)}</div>${e.backdated?`<span class="tag-back">Backdated</span>`:''}</div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;">
+        <span class="bdg ${e.shift==='A'?'ba':e.shift==='B'?'bb':'bc'}">${e.shift}</span>
+        ${hasR?'<span class="bdg br">Refund</span>':''}${spd.length?'<span class="bdg bp">Special</span>':''}
+      </div></div>
+      <div class="he-bdgs">
+        ${e.leg_in?`<span class="bdg ${e.leg_in==='logidis'?'bl':'br'}">IN: ${L[e.leg_in]||e.leg_in}</span>`:''}
+        ${e.leg_out?`<span class="bdg ${e.leg_out==='logidis'?'bl':'br'}">OUT: ${L[e.leg_out]||e.leg_out}</span>`:''}
+        ${spd.map(s=>`<span class="bdg bp">Special ${s.direction?.toUpperCase()||''} ${s.event_time||''}</span>`).join('')}
+      </div>${drv}
+    </div>`;
+  }).join(''):`<div class="empty">No declarations yet — use Declare tab to log your first entry</div>`;
+  return`<div class="sec">
+    <div class="met3"><div class="met"><div class="v">${hist.length}</div><div class="l">Days logged</div></div>
+      <div class="met"><div class="v">${logT}</div><div class="l">Logidis</div></div>
+      <div class="met"><div class="v" style="color:#15803D;">${refD}</div><div class="l">Refund days</div></div></div>
+    ${c14.length?`<div class="card"><div class="card-title">Last ${c14.length} days</div>
+      <div class="chart-wrap">${bars}</div>
+      <div class="legend"><div class="leg-it"><div class="leg-dot" style="background:#10B981;"></div>Logidis</div>
+        <div class="leg-it"><div class="leg-dot" style="background:#F59E0B;"></div>Refund-eligible</div>
+        <div class="leg-it"><div class="leg-dot" style="background:#EC4899;"></div>Special</div></div></div>`:''}
+    <div class="card"><div class="card-title">Full log — ${fmtM()}</div>${items}</div>
+  </div>`;
+}
+
+function rSpSt(){
+  const uid=S.user.id,sp=uEvs(uid);
+  const form=S.spShow?rSpForm():`<button class="btn btn-pk" style="margin-bottom:16px;" onclick="togSp(true)">+ Log a special transport trip</button>`;
+  const items=sp.length?sp.map(e=>`<div class="spc ${e.reviewed?'rev':''}">
+    <div class="flex-bet" style="margin-bottom:8px;">
+      <div><div style="font-size:13px;font-weight:700;">${fmtD(e.date)}</div>
+        <div style="font-size:12px;color:#64748B;margin-top:2px;">${e.direction?.toUpperCase()||''} · ${e.event_time||''}</div>
+        ${e.driver_name||e.car_plate?`<div style="font-size:11px;color:#64748B;">${e.driver_name||''} ${e.car_plate?'· '+e.car_plate:''}</div>`:''}</div>
+      <span class="bdg ${e.reviewed?'bo':'bg'}">${e.reviewed?'Reviewed':'Pending'}</span>
+    </div>
+    <div style="font-size:12px;color:#BE185D;background:#FCE7F3;border-radius:8px;padding:7px 10px;">${e.reason||''}</div>
+  </div>`).join(''):`<div class="empty">No special transport logged yet</div>`;
+  return`<div class="sec">
+    <div class="info-bar" style="background:#FCE7F3;color:#BE185D;">Use this tab when Logidis transport was provided <strong>outside your normal shift times</strong> — heavy rain, cyclone warning, road closure or any other exceptional situation.</div>
+    ${form}
+    ${!S.spShow?`<div style="font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Your special transport history</div>${items}`:''}
+  </div>`;
+}
+
+function rSpForm(){
+  const f=S.spForm,ok=f.direction&&f.time&&f.reason;
+  return`<div style="border:2px solid #EC4899;border-radius:16px;padding:16px;margin-bottom:16px;">
+    <div style="font-size:14px;font-weight:800;color:#BE185D;margin-bottom:14px;">Log a special transport trip</div>
+    <div class="ig"><div class="lbl">Date</div><input type="date" class="inp" value="${f.date||tod()}" max="${tod()}" onchange="spf('date',this.value)"/></div>
+    <div class="ig"><div class="lbl">Direction</div><div style="display:flex;gap:8px;">
+      <button class="btn btn-sm ${f.direction==='in'?'btn-p':'btn-o'}" style="flex:1;" onclick="spf('direction','in')">IN — to work</button>
+      <button class="btn btn-sm ${f.direction==='out'?'btn-p':'btn-o'}" style="flex:1;" onclick="spf('direction','out')">OUT — from work</button>
+    </div></div>
+    <div class="ig"><div class="lbl">Actual time</div><input type="time" class="inp" value="${f.time||''}" onchange="spf('time',this.value)"/></div>
+    <div class="irow">
+      <div style="flex:1;" class="ig"><div class="lbl">Driver name</div><input class="inp" style="padding:9px 11px;font-size:13px;" placeholder="Optional" value="${f.driver||''}" oninput="spf('driver',this.value)"/></div>
+      <div style="flex:1;" class="ig"><div class="lbl">Car plate</div><input class="inp" style="padding:9px 11px;font-size:13px;text-transform:uppercase;" placeholder="Optional" value="${f.plate||''}" oninput="spf('plate',this.value.toUpperCase())"/></div>
+    </div>
+    <div class="ig"><div class="lbl">Reason</div><input class="inp" style="padding:9px 11px;font-size:13px;" placeholder="e.g. Heavy rain, cyclone warning…" value="${f.reason||''}" oninput="spf('reason',this.value)"/>
+      <div style="font-size:11px;color:#94A3B8;margin-top:4px;">Manager may adjust the wording</div></div>
+    <button class="btn btn-p ${ok?'':'disabled'}" ${ok?'':'disabled'} onclick="subSp()" style="margin-bottom:8px;">Submit</button>
+    <button class="btn btn-o" onclick="togSp(false)">Cancel</button>
+  </div>`;
+}
+
+function rAcct(){
+  const u=S.user,isM=isMgr(u);
+  return`<div class="sec">
+    <div style="padding:24px 0 20px;text-align:center;">
+      <div class="nc-av ${avc(u.color)}" style="width:72px;height:72px;font-size:24px;margin:0 auto 12px;">${u.initials}</div>
+      <div style="font-size:20px;font-weight:800;">${u.name}</div>
+      <div style="font-size:13px;color:#94A3B8;font-weight:600;margin-top:4px;">${isM?'Manager':'Analyst'} · Emtel SOC</div>
+    </div>
+    <div class="mi" onclick="stCP()"><div class="mi-left"><div class="mi-ico" style="background:#EFF6FF;font-size:18px;">🔑</div>
+      <div><div class="mi-lbl">Change PIN</div><div class="mi-sub">Update your 4-digit PIN</div></div></div><span style="color:#CBD5E1;font-size:20px;">›</span></div>
+    <div class="mi" onclick="goRst(${u.id})"><div class="mi-left"><div class="mi-ico" style="background:#FEF3C7;font-size:18px;">🔓</div>
+      <div><div class="mi-lbl">Reset PIN</div><div class="mi-sub">Manager override — resets to ${CONFIG.defaultPin}</div></div></div><span style="color:#CBD5E1;font-size:20px;">›</span></div>
+    <div class="mi" onclick="logout()" style="margin-top:16px;"><div class="mi-left"><div class="mi-ico" style="background:#FEE2E2;font-size:18px;">🚪</div>
+      <div><div class="mi-lbl" style="color:#B91C1C;">Sign out</div><div class="mi-sub">You'll need your PIN to sign back in</div></div></div><span style="color:#CBD5E1;font-size:20px;">›</span></div>
+  </div>`;
+}
+
+function rMgr(){
+  if(S.mTab==='today')return rMToday();
+  if(S.mTab==='events')return rMEvs();
+  if(S.mTab==='recon')return rMRecon();
+  if(S.mTab==='account')return rAcct();
+  return'';
+}
+
+function rMToday(){
+  const td=tod(),tdd=S.decls.filter(d=>d.date===td),total=anas().length;
+  const logT=tdd.reduce((s,d)=>s+(d.leg_in==='logidis'?1:0)+(d.leg_out==='logidis'?1:0),0);
+  const refT=tdd.reduce((s,d)=>s+(isRef(d.leg_in)?1:0)+(isRef(d.leg_out)?1:0),0);
+  const spT=S.events.filter(e=>e.date===td).length;
+  const L={logidis:'Logidis',own:'Own',bus:'Bus',auto:'Auto'};
+  const rows=anas().map(a=>{
+    const d=tdd.find(x=>x.analyst_id===a.id),hasSp=S.events.some(e=>e.analyst_id===a.id&&e.date===td);
+    const sh=d?.shift?SHIFTS[d.shift]:null;
+    const cell=(val,prov)=>{
+      if(!prov)return`<span class="bdg bg" style="font-size:10px;">Auto</span>`;
+      if(!val)return`<span class="bdg bg" style="font-size:10px;">–</span>`;
+      return`<span class="bdg ${val==='logidis'?'bl':'br'}" style="font-size:10px;">${L[val]||val}</span>`;
+    };
+    return`<div class="rr"><div class="rav ${avc(a.color)}">${a.initials}</div>
+      <div style="flex:1;"><div class="rname">${a.name}</div><div class="rsub">${d?'Shift '+d.shift:'Not declared'}</div></div>
+      <div class="rbdgs">
+        ${sh?cell(d?.leg_in,sh.legs[0].provided):''}
+        ${sh?cell(d?.leg_out,sh.legs[1].provided):''}
+        ${hasSp?`<span class="bdg bp" style="font-size:10px;">Special</span>`:''}
+        <span class="bdg ${d?'bo':'bg'}" style="font-size:10px;">${d?'Done':'Pending'}</span>
+      </div></div>`;
+  }).join('');
+  return`<div class="sec">
+    <div class="met4"><div class="met"><div class="v">${tdd.length}/${total}</div><div class="l">Declared</div></div>
+      <div class="met"><div class="v">${logT}</div><div class="l">Logidis</div></div>
+      <div class="met"><div class="v" style="color:#15803D;">${refT}</div><div class="l">Refund</div></div>
+      <div class="met"><div class="v" style="color:#BE185D;">${spT}</div><div class="l">Special</div></div></div>
+    <div style="font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>
+    <div class="roster">${rows||'<div class="empty">No analysts</div>'}</div>
+  </div>`;
+}
+
+function rMEvs(){
+  const sorted=[...S.events].filter(e=>!e.is_inline).sort((a,b)=>(a.reviewed===b.reviewed?0:a.reviewed?1:-1)||b.date.localeCompare(a.date));
+  const items=sorted.map(e=>{
+    const a=byId(e.analyst_id),isEd=S.editEvId===e.id;
+    return`<div class="spc ${e.reviewed?'rev':''}">
+      <div class="flex-bet" style="margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="rav ${a?avc(a.color):'av-blue'}">${a?.initials||'?'}</div>
+          <div><div style="font-size:13px;font-weight:700;">${a?.name||'Unknown'}</div>
+            <div style="font-size:12px;color:#64748B;">${fmtD(e.date)} · ${e.direction?.toUpperCase()||''} · ${e.event_time||''}</div>
+            ${e.driver_name||e.car_plate?`<div style="font-size:11px;color:#64748B;">${e.driver_name||''} ${e.car_plate?'· '+e.car_plate:''}</div>`:''}</div>
+        </div>
+        <span class="bdg" style="${e.reviewed?'background:#DCFCE7;color:#15803D;':'background:#FEE2E2;color:#B91C1C;'}">${e.reviewed?'Reviewed':'New'}</span>
+      </div>
+      ${isEd?`<input class="inp" id="ed-${e.id}" value="${e.reason||''}" style="margin-bottom:8px;font-size:13px;"/>`:
+        `<div style="font-size:13px;color:#BE185D;background:#FCE7F3;border-radius:8px;padding:8px 10px;margin-bottom:10px;">${e.reason||''}</div>`}
+      <div style="display:flex;gap:8px;">
+        ${isEd?`<button class="btn btn-p btn-sm" style="flex:1;" onclick="saveEd(${e.id})">Save</button><button class="btn btn-o btn-sm" style="flex:1;" onclick="canEd()">Cancel</button>`
+              :`<button class="btn btn-o btn-sm" style="flex:1;" onclick="editEv(${e.id})">Edit reason</button>
+               ${!e.reviewed?`<button class="btn btn-sm" style="flex:1;background:#10B981;color:#fff;" onclick="markRev(${e.id})">Mark reviewed</button>`
+                            :`<button class="btn btn-o btn-sm" style="flex:1;opacity:.4;" disabled>Reviewed</button>`}`}
+      </div></div>`;
+  }).join('');
+  return`<div class="sec">
+    <div class="info-bar" style="background:#FCE7F3;color:#BE185D;">Review and edit reason if needed, then mark as reviewed.</div>
+    ${sorted.length?items:'<div class="empty">No special events logged yet</div>'}
+  </div>`;
+}
+
+function rMRecon(){
+  const sum=anas().map(a=>{
+    const d=uDecls(a.id);
+    const logT=d.reduce((s,x)=>s+(x.leg_in==='logidis'?1:0)+(x.leg_out==='logidis'?1:0),0);
+    const refD=d.filter(x=>isRef(x.leg_in)||isRef(x.leg_out)).length;
+    const spC=uEvs(a.id).length;
+    return{a,logT,refD,spC};
+  });
+  const tL=sum.reduce((s,x)=>s+x.logT,0),tR=sum.reduce((s,x)=>s+x.refD,0),tS=sum.reduce((s,x)=>s+x.spC,0);
+  const rows=sum.map(({a,logT,refD,spC})=>`<div class="recon-row">
+    <div class="rav ${avc(a.color)}">${a.initials}</div>
+    <div style="flex:1;"><div style="font-size:13px;font-weight:700;">${a.name}</div><div style="font-size:11px;color:#94A3B8;">${spC} special trip${spC!==1?'s':''}</div></div>
+    <div style="display:flex;gap:20px;"><div class="rn"><div class="n">${logT}</div><div class="l">Logidis</div></div>
+      <div class="rn"><div class="n" style="color:#15803D;">${refD}</div><div class="l">Refund</div></div></div>
+  </div>`).join('');
+  return`<div class="sec">
+    <div class="met3"><div class="met"><div class="v">${tL}</div><div class="l">Logidis</div></div>
+      <div class="met"><div class="v" style="color:#15803D;">${tR}</div><div class="l">Refund days</div></div>
+      <div class="met"><div class="v" style="color:#BE185D;">${tS}</div><div class="l">Special</div></div></div>
+    <div class="card"><div class="card-title">Per analyst — ${fmtM()}</div>${rows||'<div class="empty">No data yet</div>'}</div>
+    <div style="display:flex;gap:8px;margin-top:4px;">
+      <button class="btn btn-o" onclick="expCSV()">Export CSV</button>
+      <button class="btn btn-d" onclick="dbLoad();toast('Refreshed')">Refresh</button>
+    </div>
+  </div>`;
+}
+
+// Actions
+function setST(t){S.sTab=t;render();}
+function setMT(t){S.mTab=t;render();}
+function goAcct(){if(isMgr(S.user))S.mTab='account';else S.sTab='account';render();}
+function setDt(d){S.date=d;S.shift=null;S.choices={};S.dIn='';S.pIn='';S.dOut='';S.pOut='';S.uIn=false;S.uOut=false;S.udIn={};S.udOut={};render();}
+function setSh(k){S.shift=k;S.choices={};S.dIn='';S.pIn='';S.dOut='';S.pOut='';S.uIn=false;S.uOut=false;render();}
+function pick(id,c){S.choices[id]=c;render();}
+function togU(id){if(id==='in')S.uIn=!S.uIn;else S.uOut=!S.uOut;render();}
+function setUD(id,f,v){if(id==='in')S.udIn[f]=v;else S.udOut[f]=v;}
+function togSp(v){S.spShow=v;S.spForm={date:tod()};render();}
+function spf(k,v){S.spForm[k]=v;render();}
+function editEv(id){S.editEvId=id;render();}
+function canEd(){S.editEvId=null;render();}
+function stCP(){S.screen='chg';S.pinMode='old';S.pinBuf='';S.pinNew='';S.pinErr=false;render();}
+function logout(){LS.clearSess();S.user=null;S.screen='login';render();}
+
+async function subD(){
+  const uid=S.user.id,sh=SHIFTS[S.shift];
+  const lIn=sh.legs.find(l=>l.id==='in'),lOut=sh.legs.find(l=>l.id==='out');
+  const row={
+    analyst_id:uid,date:S.date,shift:S.shift,
+    leg_in:lIn.provided?(S.choices['in']||null):'auto',
+    leg_out:lOut.provided?(S.choices['out']||null):'auto',
+    backdated:S.date!==tod(),
+    driver_name_in:S.dIn||null,car_plate_in:S.pIn||null,
+    driver_name_out:S.dOut||null,car_plate_out:S.pOut||null,
+  };
+  const ok=await dbSaveDecl(row);
+  if(!ok)return;
+  const ps=[];
+  if(!lIn.provided&&S.uIn&&S.udIn.time&&S.udIn.reason)
+    ps.push(dbSaveEv({analyst_id:uid,date:S.date,event_time:S.udIn.time,direction:'in',reason:S.udIn.reason,driver_name:S.udIn.driver||null,car_plate:S.udIn.plate||null,reviewed:false,is_inline:true}));
+  if(!lOut.provided&&S.uOut&&S.udOut.time&&S.udOut.reason)
+    ps.push(dbSaveEv({analyst_id:uid,date:S.date,event_time:S.udOut.time,direction:'out',reason:S.udOut.reason,driver_name:S.udOut.driver||null,car_plate:S.udOut.plate||null,reviewed:false,is_inline:true}));
+  await Promise.all(ps);
+  S.choices={};S.shift=null;S.dIn='';S.pIn='';S.dOut='';S.pOut='';S.uIn=false;S.uOut=false;S.udIn={};S.udOut={};
+  toast(row.backdated?'Backdated entry saved':'Declaration submitted!');render();
+}
+
+async function subSp(){
+  const f=S.spForm;
+  const ok=await dbSaveEv({analyst_id:S.user.id,date:f.date||tod(),event_time:f.time,direction:f.direction,reason:f.reason,driver_name:f.driver||null,car_plate:f.plate||null,reviewed:false,is_inline:false});
+  if(!ok)return;
+  S.spShow=false;S.spForm={};toast('Special trip logged');render();
+}
+
+async function saveEd(id){
+  const el=document.getElementById('ed-'+id);
+  if(!el)return;
+  const ok=await dbUpdEv(id,{reason:el.value});
+  if(ok){S.editEvId=null;render();}
+}
+
+async function markRev(id){
+  const ok=await dbUpdEv(id,{reviewed:true});
+  if(ok){toast('Marked as reviewed');render();}
+}
+
+function expCSV(){
+  const L={logidis:'Logidis',own:'Own vehicle',bus:'Public bus',auto:'Public transport'};
+  const rows=[['Date','Analyst','Shift','IN transport','IN driver','IN plate','OUT transport','OUT driver','OUT plate','Backdated','Refund eligible']];
+  S.decls.forEach(d=>{
+    const a=byId(d.analyst_id);
+    rows.push([d.date,a?.name||d.analyst_id,d.shift,L[d.leg_in]||d.leg_in||'',d.driver_name_in||'',d.car_plate_in||'',L[d.leg_out]||d.leg_out||'',d.driver_name_out||'',d.car_plate_out||'',d.backdated?'Yes':'No',(isRef(d.leg_in)||isRef(d.leg_out))?'Yes':'No']);
+  });
+  S.events.filter(e=>!e.is_inline).forEach(e=>{
+    const a=byId(e.analyst_id);
+    rows.push([e.date,a?.name||e.analyst_id,'Special',(e.direction?.toUpperCase()||'')+' '+(e.event_time||''),'','','','',e.driver_name||'',e.car_plate||'','N/A','Yes']);
+  });
+  const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='soc-transport-'+new Date().toISOString().slice(0,7)+'.csv';
+  a.click();URL.revokeObjectURL(url);toast('CSV downloaded');
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+// Boot
+(function(){
+  const s=LS.getSess();
+  if(s){const u=byId(s.id);if(u){S.user=u;S.screen='app';dbLoad();return;}}
+  S.screen='login';render();
+})();
+</script>
+</body>
+</html>
