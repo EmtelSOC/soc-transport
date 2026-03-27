@@ -5,182 +5,340 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="SOC Transport">
-<meta name="theme-color" content="#0F1629">
-<title>SOC Transport</title>
+<meta name="theme-color" content="#000000">
+<title>SOC Transport — Emtel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+:root{
+  --bg:#000;--bg1:#0f0f0f;--bg2:#161616;--bg3:#1f1f1f;--bg4:#282828;
+  --line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.12);--line3:rgba(255,255,255,.18);
+  --blue:#2563EB;--blue-l:#3B82F6;--blue-d:rgba(37,99,235,.18);
+  --green:#10B981;--green-d:rgba(16,185,129,.13);
+  --amber:#F59E0B;--amber-d:rgba(245,158,11,.13);
+  --rose:#F43F5E;--rose-d:rgba(244,63,94,.12);
+  --violet:#7C3AED;--violet-d:rgba(124,58,237,.13);
+  --t1:#fff;--t2:#a1a1aa;--t3:#52525b;--t4:#3f3f46;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overscroll-behavior:none;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F0F4F8;color:#0F1629;font-size:15px;-webkit-font-smoothing:antialiased;}
-#app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
-.hdr{background:#0F1629;color:#fff;padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.hdr-title{font-size:16px;font-weight:700;}
-.hdr-sub{font-size:12px;color:#475569;margin-top:1px;}
-.hdr-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0;}
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #E2E8F0;display:flex;padding:6px 0 calc(6px + env(safe-area-inset-bottom));z-index:30;}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;padding:4px;cursor:pointer;border:none;background:transparent;color:#94A3B8;font-size:10px;font-weight:700;gap:3px;position:relative;}
-.nb.on{color:#2563EB;}
-.nb svg{width:22px;height:22px;}
-.nb-dot::after{content:'';position:absolute;top:3px;right:calc(50% - 14px);width:7px;height:7px;background:#EC4899;border-radius:50%;border:2px solid #fff;}
-.scroll{flex:1;overflow-y:auto;padding-bottom:80px;}
-.sec{padding:16px;}
-.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(15,22,41,.07);}
-.card-title{font-size:13px;font-weight:700;margin-bottom:12px;}
-.met3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
-.met4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
-.met{background:#fff;border-radius:12px;padding:12px 8px;text-align:center;box-shadow:0 1px 4px rgba(15,22,41,.07);}
-.met .v{font-size:22px;font-weight:800;}
-.met .l{font-size:10px;font-weight:700;color:#94A3B8;margin-top:2px;text-transform:uppercase;}
-.bdg{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;line-height:1.4;}
-.bl{background:#CCFBF1;color:#0F766E;}.br{background:#DCFCE7;color:#15803D;}.bp{background:#FCE7F3;color:#BE185D;}
-.bg{background:#F1F5F9;color:#64748B;}.bo{background:#DCFCE7;color:#15803D;}
-.ba{background:#DBEAFE;color:#1D4ED8;}.bb{background:#FEF3C7;color:#B45309;}.bc{background:#EDE9FE;color:#7C3AED;}
-.inp{width:100%;padding:12px 14px;border:1.5px solid #E2E8F0;border-radius:12px;font-size:14px;color:#0F1629;background:#fff;-webkit-appearance:none;outline:none;}
-.inp:focus{border-color:#2563EB;}
-.lbl{font-size:12px;font-weight:700;color:#64748B;margin-bottom:5px;}
-.ig{margin-bottom:12px;}
-.irow{display:flex;gap:8px;}
-.btn{width:100%;padding:14px;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;}
-.btn:active{opacity:.82;}.btn:disabled{opacity:.3;cursor:default;}
-.btn-p{background:#2563EB;color:#fff;}.btn-d{background:#0F1629;color:#fff;}
-.btn-o{background:#fff;color:#0F1629;border:1.5px solid #E2E8F0;}
-.btn-pk{background:#fff;color:#BE185D;border:1.5px solid #FBCFE8;}
-.btn-sm{padding:9px 14px;font-size:13px;border-radius:10px;width:auto;}
-.shift-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
-.sc{border:2px solid #E2E8F0;border-radius:14px;padding:12px 8px;text-align:center;cursor:pointer;background:#fff;}
-.sc .sn{font-size:15px;font-weight:800;}.sc .st{font-size:10px;color:#94A3B8;margin-top:2px;font-weight:600;}
-.sc.onA{border-color:#2563EB;background:#EFF6FF;}.sc.onB{border-color:#D97706;background:#FFFBEB;}.sc.onC{border-color:#7C3AED;background:#F5F3FF;}
-.leg{border:1.5px solid #E2E8F0;border-radius:14px;padding:14px;margin-bottom:10px;background:#fff;}
-.leg-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.leg-name{font-size:14px;font-weight:700;}
-.choices{display:flex;gap:6px;}
-.cb{flex:1;padding:10px 4px;border:2px solid #E2E8F0;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:#64748B;text-align:center;}
-.cb.cL{border-color:#10B981;background:#ECFDF5;color:#065F46;}
-.cb.cO{border-color:#EF4444;background:#FEF2F2;color:#991B1B;}
-.cb.cB{border-color:#F59E0B;background:#FFFBEB;color:#92400E;}
-.drv-box{background:#F8FAFC;border-radius:10px;padding:12px;margin-top:10px;}
-.drv-title{font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
-.refund-note{font-size:12px;color:#065F46;background:#ECFDF5;border-radius:8px;padding:7px 10px;margin-top:8px;font-weight:600;}
-.fixed-note{font-size:12px;color:#64748B;background:#F8FAFC;border-radius:8px;padding:8px 10px;}
-.divider{height:1px;background:#F1F5F9;margin:12px 0;}
-.tog-row{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0;}
-.tog-lbl{font-size:13px;font-weight:700;color:#BE185D;}
-.tog{width:44px;height:26px;border-radius:13px;background:#E2E8F0;position:relative;transition:background .2s;flex-shrink:0;}
-.tog.on{background:#EC4899;}
-.tog-th{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.18);}
-.tog.on .tog-th{transform:translateX(18px);}
-.unsch-box{background:#FDF4FF;border:1.5px solid #E879F9;border-radius:12px;padding:12px;margin-top:10px;}
-.chart-wrap{height:80px;display:flex;align-items:flex-end;gap:3px;}
-.chart-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;}
-.chart-bar{border-radius:3px 3px 0 0;min-height:3px;}
-.chart-lbl{font-size:9px;color:#CBD5E1;text-align:center;margin-top:3px;}
-.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;}
-.leg-it{display:flex;align-items:center;gap:5px;font-size:11px;color:#64748B;font-weight:600;}
-.leg-dot{width:8px;height:8px;border-radius:2px;}
-.he{padding:13px 0;border-bottom:1px solid #F1F5F9;}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--t1);font-size:15px;-webkit-font-smoothing:antialiased;}
+#app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
+
+/* Scroll */
+.scroll{flex:1;overflow-y:auto;padding-bottom:90px;}
+.pg{padding:18px 16px;}
+
+/* Topbar */
+.topbar{background:rgba(0,0,0,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--line);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;flex-shrink:0;}
+.tb-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;}
+.tb-title{font-size:18px;font-weight:800;letter-spacing:-.03em;}
+.tb-right{display:flex;align-items:center;gap:10px;}
+.tb-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--line3);transition:opacity .15s;flex-shrink:0;}
+.tb-av:active{opacity:.7;}
+.tb-back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--t3);cursor:pointer;padding:4px 0;}
+
+/* Bottom nav */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(0,0,0,.94);backdrop-filter:blur(24px);border-top:1px solid var(--line);display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:30;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;cursor:pointer;border:none;background:transparent;color:var(--t3);font-size:10px;font-weight:600;font-family:'Inter',sans-serif;letter-spacing:.01em;transition:color .15s;position:relative;}
+.nb.on{color:var(--t1);}
+.nb svg{width:20px;height:20px;}
+.nb-pip{position:absolute;top:4px;right:calc(50% - 15px);width:6px;height:6px;background:var(--rose);border-radius:50%;border:1.5px solid var(--bg);}
+
+/* Bento metrics */
+.bento{display:grid;gap:8px;margin-bottom:18px;}
+.g2{grid-template-columns:1fr 1fr;}
+.g3{grid-template-columns:repeat(3,1fr);}
+.g4{grid-template-columns:repeat(4,1fr);}
+.tile{background:var(--bg1);border:1px solid var(--line);border-radius:14px;padding:15px 13px;}
+.tile .tv{font-size:26px;font-weight:900;letter-spacing:-.04em;line-height:1;}
+.tile .tl{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-top:6px;}
+.tile-sm .tv{font-size:22px;}
+
+/* Section label */
+.sh{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+
+/* Cards */
+.card{background:var(--bg1);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:12px;}
+.card-body{padding:16px;}
+.card-title{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px;}
+
+/* Badges */
+.b{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;letter-spacing:.01em;}
+.b-g{background:var(--green-d);color:#34D399;}
+.b-a{background:var(--amber-d);color:#FCD34D;}
+.b-r{background:var(--rose-d);color:#FB7185;}
+.b-v{background:var(--violet-d);color:#A78BFA;}
+.b-bl{background:var(--blue-d);color:#93C5FD;}
+.b-z{background:rgba(255,255,255,.06);color:var(--t3);}
+.b-sa{background:rgba(37,99,235,.2);color:#93C5FD;}
+.b-sb{background:rgba(245,158,11,.2);color:#FCD34D;}
+.b-sc{background:rgba(124,58,237,.2);color:#A78BFA;}
+.b-nm{background:rgba(20,184,166,.15);color:#5EEAD4;}
+.b-sm{background:rgba(139,92,246,.15);color:#C4B5FD;}
+
+/* Inputs */
+.inp{width:100%;padding:12px 14px;border:1px solid var(--line2);border-radius:12px;font-size:14px;font-weight:500;font-family:'Inter',sans-serif;color:var(--t1);background:var(--bg2);-webkit-appearance:none;outline:none;transition:border-color .15s;}
+.inp:focus{border-color:var(--blue-l);}
+.inp::placeholder{color:var(--t3);}
+.inp-label{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px;}
+.ig{margin-bottom:14px;}
+.irow{display:flex;gap:10px;}
+
+/* Buttons */
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:-.01em;transition:opacity .15s,transform .1s;}
+.btn:active{transform:scale(.97);opacity:.85;}
+.btn:disabled{opacity:.3;cursor:default;transform:none;}
+.btn-p{background:var(--t1);color:var(--bg);}
+.btn-s{background:var(--bg2);color:var(--t1);border:1px solid var(--line2);}
+.btn-g{background:var(--green-d);color:#34D399;border:1px solid rgba(16,185,129,.2);}
+.btn-r{background:var(--rose-d);color:#FB7185;border:1px solid rgba(244,63,94,.2);}
+.btn-a{background:var(--amber-d);color:#FCD34D;border:1px solid rgba(245,158,11,.2);}
+.btn-sm2{padding:9px 14px;font-size:13px;border-radius:10px;width:auto;}
+
+/* Shift selector */
+.shift-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px;}
+.sc{border:1px solid var(--line2);border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;background:var(--bg1);transition:all .15s;}
+.sc:active{transform:scale(.96);}
+.sc .sn{font-size:17px;font-weight:800;letter-spacing:-.02em;}
+.sc .st{font-size:10px;color:var(--t3);margin-top:4px;font-weight:500;}
+.sc.onA{border-color:var(--blue-l);background:var(--blue-d);}
+.sc.onA .sn{color:#93C5FD;}
+.sc.onB{border-color:var(--amber);background:var(--amber-d);}
+.sc.onB .sn{color:#FCD34D;}
+.sc.onC{border-color:var(--violet);background:var(--violet-d);}
+.sc.onC .sn{color:#A78BFA;}
+
+/* Leg card */
+.leg{border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:10px;background:var(--bg1);}
+.leg-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;}
+.leg-title{font-size:15px;font-weight:700;letter-spacing:-.01em;}
+.choices{display:flex;gap:7px;}
+.cb{flex:1;padding:10px 4px;border:1px solid var(--line2);border-radius:10px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;background:transparent;color:var(--t3);text-align:center;transition:all .15s;}
+.cb:active{transform:scale(.94);}
+.cb.cL{border-color:var(--green);background:var(--green-d);color:#34D399;}
+.cb.cO{border-color:var(--rose);background:var(--rose-d);color:#FB7185;}
+.cb.cB{border-color:var(--amber);background:var(--amber-d);color:#FCD34D;}
+.drv-wrap{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px;}
+.drv-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.refund-pill{font-size:12px;font-weight:600;color:#34D399;background:var(--green-d);border-radius:8px;padding:7px 12px;margin-top:10px;}
+.fixed-pill{font-size:12px;color:var(--t3);background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;}
+.divider{height:1px;background:var(--line);margin:13px 0;}
+.tog-row{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:3px 0;}
+.tog-label{font-size:13px;font-weight:600;color:#FB7185;}
+.tog{width:44px;height:26px;border-radius:13px;background:var(--bg3);position:relative;transition:background .2s;flex-shrink:0;}
+.tog.on{background:var(--rose);}
+.tog-k{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 2px 6px rgba(0,0,0,.5);}
+.tog.on .tog-k{transform:translateX(18px);}
+.unsch-panel{background:var(--rose-d);border:1px solid rgba(244,63,94,.2);border-radius:12px;padding:14px;margin-top:12px;}
+.unsch-head{font-size:10px;font-weight:700;color:#FB7185;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+
+/* Chart */
+.chart{height:88px;display:flex;align-items:flex-end;gap:4px;}
+.cc{flex:1;display:flex;flex-direction:column;justify-content:flex-end;}
+.cb2{border-radius:4px 4px 0 0;min-height:4px;}
+.cl{font-size:9px;color:var(--t4);text-align:center;margin-top:5px;font-weight:600;}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;}
+.li{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2);font-weight:500;}
+.ld{width:8px;height:8px;border-radius:3px;}
+
+/* History entries */
+.he{padding:14px 0;border-bottom:1px solid var(--line);}
 .he:last-child{border-bottom:none;}
-.he-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;}
-.he-date{font-size:13px;font-weight:700;}
-.he-bdgs{display:flex;flex-wrap:wrap;gap:5px;}
-.tag-back{font-size:10px;font-weight:700;background:#FEF3C7;color:#B45309;padding:2px 6px;border-radius:8px;}
-.roster{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(15,22,41,.07);}
-.rr{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid #F1F5F9;gap:12px;}
+.he-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;}
+.he-date{font-size:14px;font-weight:700;letter-spacing:-.01em;}
+.he-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.back-chip{font-size:10px;font-weight:700;background:var(--amber-d);color:#FCD34D;padding:2px 7px;border-radius:5px;}
+
+/* Roster */
+.roster{background:var(--bg1);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+.rr{display:flex;align-items:center;padding:13px 16px;border-bottom:1px solid var(--line);gap:12px;transition:background .1s;cursor:default;}
 .rr:last-child{border-bottom:none;}
-.rav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
-.rname{font-size:13px;font-weight:700;}.rsub{font-size:11px;color:#94A3B8;}
-.rbdgs{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;margin-left:auto;}
-.spc{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;border-left:4px solid #EC4899;box-shadow:0 1px 4px rgba(15,22,41,.07);}
-.spc.rev{border-left-color:#10B981;}
-.recon-row{display:flex;align-items:center;padding:13px 0;border-bottom:1px solid #F1F5F9;gap:12px;}
+.rr.clickable{cursor:pointer;}
+.rr.clickable:active{background:var(--bg2);}
+.rav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.rname{font-size:14px;font-weight:700;letter-spacing:-.01em;}
+.rsub{font-size:11px;color:var(--t3);margin-top:2px;}
+.rbadges{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;margin-left:auto;}
+
+/* Special cards */
+.spc{background:var(--bg1);border:1px solid var(--line);border-left:3px solid var(--rose);border-radius:14px;padding:15px;margin-bottom:10px;}
+.spc.rev{border-left-color:var(--green);}
+
+/* Recon */
+.recon-row{display:flex;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);gap:12px;}
 .recon-row:last-child{border-bottom:none;}
-.rn .n{font-size:15px;font-weight:800;}.rn .l{font-size:10px;color:#94A3B8;font-weight:700;text-transform:uppercase;}
-.mi{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff;border-radius:14px;margin-bottom:8px;cursor:pointer;box-shadow:0 1px 4px rgba(15,22,41,.07);}
-.mi-left{display:flex;align-items:center;gap:12px;}
-.mi-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
-.mi-lbl{font-size:14px;font-weight:700;}.mi-sub{font-size:12px;color:#94A3B8;}
-.login{min-height:100vh;background:#0F1629;display:flex;flex-direction:column;}
-.login-top{padding:48px 24px 28px;}
-.login-logo{font-size:13px;font-weight:700;color:#2563EB;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
-.login-title{font-size:30px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:6px;}
-.login-sub{font-size:14px;color:#64748B;}
-.login-body{background:#F0F4F8;border-radius:24px 24px 0 0;flex:1;padding:24px;overflow-y:auto;}
-.login-sec{font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
-.ng{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px;}
-.nc{background:#fff;border:2px solid #E2E8F0;border-radius:14px;padding:12px 10px;display:flex;align-items:center;gap:10px;cursor:pointer;}
-.nc:active{opacity:.8;}.nc.sel{border-color:#2563EB;background:#EFF6FF;}
-.nc-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
-.nc-name{font-size:13px;font-weight:700;}.nc-role{font-size:11px;color:#94A3B8;font-weight:600;}
-.pin-screen{position:fixed;inset:0;background:#0F1629;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;padding:24px;max-width:480px;margin:0 auto;}
-.pin-who{font-size:14px;color:#64748B;font-weight:600;margin-bottom:6px;}
-.pin-title{font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;}
-.pin-hint{font-size:13px;color:#475569;margin-bottom:28px;text-align:center;line-height:1.5;}
-.pin-dots{display:flex;gap:16px;margin-bottom:36px;}
-.pd{width:14px;height:14px;border-radius:50%;border:2px solid #334155;background:transparent;transition:all .15s;}
-.pd.f{background:#2563EB;border-color:#2563EB;}.pd.e{background:#EF4444;border-color:#EF4444;}
-.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:264px;margin-bottom:20px;}
-.pk{height:70px;border-radius:16px;border:none;font-size:24px;font-weight:700;color:#fff;background:#1E293B;cursor:pointer;}
-.pk:active{background:#334155;}.pk.del{font-size:18px;}.pk.emp{background:transparent;pointer-events:none;}
-.pin-err{font-size:13px;color:#EF4444;font-weight:700;margin-top:8px;}
-.pin-link{font-size:13px;color:#475569;cursor:pointer;text-decoration:underline;margin-top:10px;}
-.pin-back{font-size:13px;color:#475569;cursor:pointer;margin-top:14px;}
-.av-blue{background:#DBEAFE;color:#1D4ED8;}.av-teal{background:#CCFBF1;color:#0F766E;}
-.av-green{background:#DCFCE7;color:#15803D;}.av-amber{background:#FEF3C7;color:#B45309;}
-.av-coral{background:#FEE2E2;color:#9F1239;}.av-purple{background:#EDE9FE;color:#7C3AED;}
-.av-pink{background:#FCE7F3;color:#BE185D;}.av-navy{background:#E0E7FF;color:#3730A3;}
-.info-bar{border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;font-weight:600;line-height:1.5;}
-.err-bar{background:#FEE2E2;border-radius:10px;padding:10px 14px;font-size:13px;color:#B91C1C;font-weight:600;margin-bottom:12px;}
-.empty{text-align:center;padding:40px 20px;color:#94A3B8;font-size:13px;font-weight:600;}
-.loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:#94A3B8;font-size:13px;}
-.spin{width:18px;height:18px;border:2.5px solid #E2E8F0;border-top-color:#2563EB;border-radius:50%;animation:spin .7s linear infinite;}
+.rn .n{font-size:16px;font-weight:800;letter-spacing:-.03em;}
+.rn .l{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+
+/* Menu items */
+.mi{display:flex;align-items:center;justify-content:space-between;padding:15px 16px;background:var(--bg1);border:1px solid var(--line);border-radius:14px;margin-bottom:8px;cursor:pointer;transition:background .1s;}
+.mi:active{background:var(--bg2);}
+.mi-left{display:flex;align-items:center;gap:13px;}
+.mi-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.mi-label{font-size:15px;font-weight:700;}
+.mi-sub{font-size:12px;color:var(--t3);margin-top:2px;}
+
+/* Avatar colours */
+.av-blue  {background:rgba(59,130,246,.18);color:#93C5FD;}
+.av-teal  {background:rgba(20,184,166,.18);color:#5EEAD4;}
+.av-green {background:rgba(34,197,94,.18);color:#86EFAC;}
+.av-amber {background:rgba(245,158,11,.18);color:#FCD34D;}
+.av-coral {background:rgba(251,113,133,.18);color:#FDA4AF;}
+.av-purple{background:rgba(139,92,246,.18);color:#C4B5FD;}
+.av-pink  {background:rgba(236,72,153,.18);color:#F9A8D4;}
+.av-navy  {background:rgba(99,102,241,.18);color:#A5B4FC;}
+
+/* ── LOGIN ──────────────────────────────────────── */
+.login-screen{min-height:100vh;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;position:relative;}
+.login-glow{position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(37,99,235,.14) 0%,transparent 70%);pointer-events:none;}
+.login-top{padding:60px 24px 32px;position:relative;z-index:1;}
+.login-eye{display:inline-flex;align-items:center;gap:7px;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.22);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:#93C5FD;letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px;}
+.login-dot{width:6px;height:6px;border-radius:50%;background:var(--blue-l);}
+.login-h1{font-size:48px;font-weight:900;letter-spacing:-.06em;line-height:.9;color:var(--t1);margin-bottom:12px;}
+.login-h1 span{color:var(--blue-l);}
+.login-sub{font-size:15px;color:var(--t3);}
+.login-body{flex:1;background:var(--bg1);border-radius:28px 28px 0 0;border-top:1px solid var(--line);padding:26px 20px 32px;position:relative;z-index:1;overflow-y:auto;}
+
+/* Search */
+.srch-wrap{position:relative;margin-bottom:10px;}
+.srch-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--t3);pointer-events:none;}
+.srch-inp{width:100%;padding:14px 14px 14px 42px;border:1px solid var(--line2);border-radius:14px;font-size:15px;font-weight:500;font-family:'Inter',sans-serif;color:var(--t1);background:var(--bg2);-webkit-appearance:none;outline:none;transition:border-color .15s;}
+.srch-inp:focus{border-color:var(--blue-l);}
+.srch-inp::placeholder{color:var(--t3);}
+.results{background:var(--bg2);border:1px solid var(--line2);border-radius:14px;overflow:hidden;margin-top:4px;}
+.ri{display:flex;align-items:center;gap:13px;padding:13px 16px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .1s;}
+.ri:last-child{border-bottom:none;}
+.ri:active{background:var(--bg3);}
+.ri-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.ri-name{font-size:14px;font-weight:700;}
+.ri-role{font-size:11px;color:var(--t3);margin-top:2px;}
+.no-res{padding:24px;text-align:center;color:var(--t3);font-size:14px;}
+.srch-hint{font-size:12px;color:var(--t3);padding:0 2px;margin-top:8px;}
+
+/* ── PIN ────────────────────────────────────────── */
+.pin-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;padding:32px;max-width:430px;margin:0 auto;}
+.pin-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:280px;height:280px;background:radial-gradient(circle,rgba(37,99,235,.1) 0%,transparent 70%);pointer-events:none;border-radius:50%;}
+.pin-who{font-size:13px;color:var(--t3);font-weight:500;margin-bottom:5px;position:relative;}
+.pin-title{font-size:28px;font-weight:900;letter-spacing:-.04em;margin-bottom:8px;position:relative;}
+.pin-hint{font-size:13px;color:var(--t3);margin-bottom:40px;text-align:center;line-height:1.6;position:relative;}
+.pin-dots{display:flex;gap:16px;margin-bottom:44px;position:relative;}
+.pd{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--t4);background:transparent;transition:all .18s;}
+.pd.f{background:var(--t1);border-color:var(--t1);}
+.pd.e{background:var(--rose);border-color:var(--rose);}
+.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:272px;margin-bottom:26px;position:relative;}
+.pk{height:72px;border-radius:16px;border:1px solid var(--line2);font-size:26px;font-weight:700;font-family:'Inter',sans-serif;color:var(--t1);background:var(--bg1);cursor:pointer;transition:all .1s;}
+.pk:active{background:var(--bg2);transform:scale(.93);}
+.pk.del{font-size:19px;}
+.pk.emp{background:transparent;border-color:transparent;pointer-events:none;}
+.pin-err{font-size:13px;color:#FB7185;font-weight:600;position:relative;}
+.pin-link{font-size:13px;color:var(--t3);cursor:pointer;margin-top:16px;text-decoration:underline;text-underline-offset:3px;position:relative;}
+.pin-back{font-size:13px;color:var(--t3);cursor:pointer;margin-top:14px;position:relative;}
+
+/* ── Misc ─────────────────────────────────────── */
+.info-box{border-radius:12px;padding:13px 15px;margin-bottom:16px;font-size:13px;font-weight:500;line-height:1.6;}
+.err-box{background:var(--rose-d);border:1px solid rgba(244,63,94,.22);border-radius:12px;padding:12px 15px;font-size:13px;color:#FB7185;margin-bottom:12px;}
+.ok-box{background:var(--green-d);border:1px solid rgba(16,185,129,.22);border-radius:12px;padding:12px 15px;font-size:13px;color:#34D399;margin-bottom:12px;}
+.empty-state{text-align:center;padding:48px 24px;}
+.empty-icon{font-size:36px;margin-bottom:12px;}
+.empty-text{font-size:14px;color:var(--t3);font-weight:500;line-height:1.6;}
+.loading{display:flex;align-items:center;justify-content:center;padding:60px;gap:12px;color:var(--t3);font-size:14px;}
+.spin{width:18px;height:18px;border:2px solid var(--line2);border-top-color:var(--blue-l);border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#0F1629;color:#fff;padding:11px 20px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;z-index:200;}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--bg2);color:var(--t1);padding:11px 22px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:opacity .22s;pointer-events:none;white-space:nowrap;z-index:200;border:1px solid var(--line2);box-shadow:0 8px 32px rgba(0,0,0,.8);}
 .toast.show{opacity:1;}
-.flex-bet{display:flex;justify-content:space-between;align-items:center;}
+.fb{display:flex;justify-content:space-between;align-items:center;}
+.done-card{background:var(--green-d);border:1px solid rgba(16,185,129,.22);border-radius:16px;padding:28px;text-align:center;}
+.back-warn{background:var(--amber-d);border:1px solid rgba(245,158,11,.22);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;color:#FCD34D;margin-bottom:16px;}
+@keyframes fu{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fu .28s ease both;}
+
+/* Staff Directory specific */
+.staff-card{background:var(--bg1);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:background .1s;}
+.staff-card:active{background:var(--bg2);}
+.staff-inactive{opacity:.45;}
+
+/* Validation table */
+.vtable{width:100%;border-collapse:collapse;font-size:12px;}
+.vtable th{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);color:var(--t3);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+.vtable td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+.vtable tr:last-child td{border-bottom:none;}
+.v-match{color:#34D399;}
+.v-query{color:#FCD34D;}
+.v-miss{color:#FB7185;}
+.v-unk{color:var(--t3);}
+
+/* Upload zone */
+.upload-zone{border:1.5px dashed var(--line3);border-radius:16px;padding:32px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--blue-l);background:var(--blue-d);}
+.upload-zone input{display:none;}
+.upload-icon{font-size:32px;margin-bottom:10px;}
+.upload-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+.upload-sub{font-size:12px;color:var(--t3);}
+
+/* Progress steps */
+.steps{display:flex;gap:0;margin-bottom:20px;}
+.step{flex:1;text-align:center;position:relative;}
+.step::after{content:'';position:absolute;top:12px;left:50%;width:100%;height:1px;background:var(--line);}
+.step:last-child::after{display:none;}
+.step-dot{width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin:0 auto 6px;position:relative;z-index:1;}
+.step.done .step-dot{background:var(--green);border-color:var(--green);color:#fff;}
+.step.active .step-dot{background:var(--blue);border-color:var(--blue);color:#fff;}
+.step-label{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+.step.active .step-label{color:var(--t1);}
+
+/* Overflow scroll table wrapper */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--line);}
+
+/* Form modal overlay */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:50;display:flex;align-items:flex-end;justify-content:center;max-width:430px;margin:0 auto;}
+.modal-sheet{background:var(--bg1);border-radius:24px 24px 0 0;border-top:1px solid var(--line2);padding:24px 20px calc(24px + env(safe-area-inset-bottom));width:100%;max-height:92vh;overflow-y:auto;}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--bg4);margin:0 auto 20px;}
+.modal-title{font-size:18px;font-weight:800;letter-spacing:-.03em;margin-bottom:20px;}
 </style>
 </head>
 <body>
-
-<!-- ╔══════════════════════════════════════════════════════╗
-     ║  CONFIG — only section you ever need to edit        ║
-     ╚══════════════════════════════════════════════════════╝ -->
 <script>
 const CONFIG = {
   supabaseUrl: 'https://kxqpqyqjstsidachtkno.supabase.co',
   supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt4cXBxeXFqc3RzaWRhY2h0a25vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2MTY5NTcsImV4cCI6MjA5MDE5Mjk1N30.5zWk5CEtYe0Lgkr33tJAmLvVCByrrT946j9AXGA2n4o',
-  defaultPin:  '1234',
-  // Managers enter this to reset any forgotten PIN back to 1234
-  // Change this to something private
-  resetPin:    '9999',
-
-  staff: [
-    // Managers
+  defaultPin: '1234',
+  resetPin:   '9999',
+  // App users — people who can log in and declare transport
+  // id must match app_user_id in staff_profiles table
+  appUsers: [
     { id:1,  name:'Sarvish',              initials:'SV', color:'blue',   role:'manager' },
     { id:2,  name:'Nabeel',               initials:'NR', color:'teal',   role:'manager' },
     { id:3,  name:'Ali',                  initials:'AL', color:'green',  role:'manager' },
     { id:4,  name:'Azaghen',              initials:'AZ', color:'amber',  role:'manager' },
     { id:5,  name:'Fardeen',              initials:'FD', color:'purple', role:'manager' },
-    // Analysts
     { id:6,  name:'Girish Soodelah',      initials:'GS', color:'coral',  role:'analyst' },
     { id:7,  name:'Malika Daby',          initials:'MD', color:'blue',   role:'analyst' },
     { id:8,  name:'Khevin Sookun',        initials:'KS', color:'teal',   role:'analyst' },
     { id:9,  name:'Davesh Khaytoo',       initials:'DK', color:'purple', role:'analyst' },
     { id:10, name:'Hishaam Nubheebucus',  initials:'HN', color:'amber',  role:'analyst' },
-    // Add more: copy a line above and give a new unique id number
   ],
 };
 </script>
-
 <div id="app"></div>
 <div class="toast" id="toast"></div>
+<div id="modal-root"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-const SHIFTS={
+/* ═══════════════════════════════════════════════════
+   SHIFTS
+═══════════════════════════════════════════════════ */
+const SH = {
   A:{label:'Shift A',time:'06:00–14:00',legs:[{id:'in',label:'IN',time:'06:00',provided:true},{id:'out',label:'OUT',time:'14:00',provided:false}]},
   B:{label:'Shift B',time:'14:00–22:00',legs:[{id:'in',label:'IN',time:'14:00',provided:false},{id:'out',label:'OUT',time:'22:00',provided:true}]},
   C:{label:'Shift C',time:'22:00–06:00',legs:[{id:'in',label:'IN',time:'22:00',provided:true},{id:'out',label:'OUT',time:'06:00',provided:true}]},
 };
 
-const LS={
+/* ═══════════════════════════════════════════════════
+   LOCAL STORAGE
+═══════════════════════════════════════════════════ */
+const LS = {
   pins(){try{return JSON.parse(localStorage.getItem('soc_pins')||'{}')}catch{return{}}},
   getPin(id){return this.pins()[id]||CONFIG.defaultPin},
   setPin(id,p){const o=this.pins();o[id]=p;localStorage.setItem('soc_pins',JSON.stringify(o))},
@@ -190,54 +348,86 @@ const LS={
   clearSess(){localStorage.removeItem('soc_sess')},
 };
 
-const db=supabase.createClient(CONFIG.supabaseUrl,CONFIG.supabaseKey);
+/* ═══════════════════════════════════════════════════
+   DATABASE
+═══════════════════════════════════════════════════ */
+const db = supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
 
-const S={
-  screen:'login',user:null,selId:null,
-  pinBuf:'',pinErr:false,pinMode:'login',pinNew:'',pinTarget:null,
-  sTab:'declare',mTab:'today',
-  date:tod(),shift:null,choices:{},
+const S = {
+  screen:'login', user:null, selId:null, query:'',
+  pinBuf:'', pinErr:false, pinMode:'login', pinNew:'', pinTarget:null,
+  sTab:'declare', mTab:'today', toolView:null,
+  date:tod(), shift:null, choices:{},
   dIn:'',pIn:'',dOut:'',pOut:'',
-  uIn:false,uOut:false,
-  udIn:{time:'',driver:'',plate:'',reason:''},
-  udOut:{time:'',driver:'',plate:'',reason:''},
+  uIn:false,uOut:false,udIn:{},udOut:{},
   spShow:false,spForm:{},editEvId:null,
-  decls:[],events:[],loading:false,err:null,
+  decls:[],events:[],staffProfiles:[],
+  loading:false, err:null,
+  // Staff edit modal
+  editStaff:null, staffForm:{}, showStaffModal:false,
+  // Roster tool
+  rosterData:[], rosterParsed:false,
+  // Logidis validator
+  logidisRows:[], logidisValidated:[], logidisParsed:false,
 };
 
 function tod(){return new Date().toISOString().split('T')[0]}
 function isRef(c){return['own','bus','auto'].includes(c)}
 function fmtD(d){return new Date(d+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}
 function fmtM(){return new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'})}
-function byId(id){return CONFIG.staff.find(s=>s.id===id)}
+function byId(id){return CONFIG.appUsers.find(s=>s.id===id)}
 function avc(c){return'av-'+(c||'blue')}
 function isMgr(u){return u&&u.role==='manager'}
-function anas(){return CONFIG.staff.filter(s=>s.role==='analyst')}
-function mgrs(){return CONFIG.staff.filter(s=>s.role==='manager')}
+function anas(){return CONFIG.appUsers.filter(s=>s.role==='analyst')}
 function uDecls(uid){return S.decls.filter(d=>d.analyst_id===uid).sort((a,b)=>b.date.localeCompare(a.date))}
 function dFor(uid,date){return S.decls.find(d=>d.analyst_id===uid&&d.date===date)}
 function uEvs(uid){return S.events.filter(e=>e.analyst_id===uid&&!e.is_inline).sort((a,b)=>b.date.localeCompare(a.date))}
 function pCnt(){return S.events.filter(e=>!e.reviewed&&!e.is_inline).length}
+function nameMatch(a,b){
+  const na=a.toLowerCase().trim(), nb=b.toLowerCase().trim();
+  return na===nb||na.startsWith(nb)||nb.startsWith(na)||na.includes(nb)||nb.includes(na);
+}
+function findStaffByName(name){
+  if(!name)return null;
+  return S.staffProfiles.find(s=>nameMatch(s.name,name)||nameMatch(s.short_name||'',name));
+}
 
-const I={
+const I = {
   cal:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
-  chart:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  bar:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
   star:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
   user:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
   list:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>`,
   bell:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
+  tool:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
   doc:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+  plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+  chev:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>`,
+  search:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+  dl:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
+  up:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>`,
 };
 
+/* ═══════════════════════════════════════════════════
+   DATABASE OPERATIONS
+═══════════════════════════════════════════════════ */
 async function dbLoad(){
-  S.loading=true;render();
+  S.loading=true; render();
   try{
-    const[d,e]=await Promise.all([db.from('declarations').select('*'),db.from('special_events').select('*')]);
+    const[d,e,sp]=await Promise.all([
+      db.from('declarations').select('*'),
+      db.from('special_events').select('*'),
+      db.from('staff_profiles').select('*').order('team').order('name'),
+    ]);
     if(d.error)throw d.error;
     if(e.error)throw e.error;
-    S.decls=d.data||[];S.events=e.data||[];S.err=null;
-  }catch(ex){S.err='Could not load data. Check your internet connection.';console.error(ex);}
-  S.loading=false;render();
+    if(sp.error)throw sp.error;
+    S.decls=d.data||[];
+    S.events=e.data||[];
+    S.staffProfiles=sp.data||[];
+    S.err=null;
+  }catch(ex){S.err='Could not connect to database.';console.error(ex);}
+  S.loading=false; render();
 }
 
 async function dbSaveDecl(row){
@@ -247,99 +437,146 @@ async function dbSaveDecl(row){
   if(data)S.decls.push(...data);
   return true;
 }
-
 async function dbSaveEv(row){
   const{data,error}=await db.from('special_events').insert(row).select();
-  if(error){toast('Save failed — try again');console.error(error);return false;}
+  if(error){toast('Save failed');return false;}
   if(data)S.events.push(...data);
   return true;
 }
-
 async function dbUpdEv(id,changes){
   const{error}=await db.from('special_events').update(changes).eq('id',id);
   if(error){toast('Update failed');return false;}
-  const ev=S.events.find(e=>e.id===id);
-  if(ev)Object.assign(ev,changes);
+  const ev=S.events.find(e=>e.id===id);if(ev)Object.assign(ev,changes);
   return true;
 }
+async function dbSaveStaff(row){
+  if(row.id){
+    const{data,error}=await db.from('staff_profiles').update(row).eq('id',row.id).select();
+    if(error){toast('Save failed');console.error(error);return false;}
+    const idx=S.staffProfiles.findIndex(s=>s.id===row.id);
+    if(idx>=0&&data)S.staffProfiles[idx]=data[0];
+  }else{
+    const{data,error}=await db.from('staff_profiles').insert(row).select();
+    if(error){toast('Save failed');console.error(error);return false;}
+    if(data)S.staffProfiles.push(...data);
+  }
+  return true;
+}
+async function dbToggleStaff(id,active){
+  const{error}=await db.from('staff_profiles').update({active}).eq('id',id);
+  if(error){toast('Update failed');return;}
+  const s=S.staffProfiles.find(x=>x.id===id);if(s)s.active=active;
+  render();
+}
 
+/* ═══════════════════════════════════════════════════
+   RENDER ROUTER
+═══════════════════════════════════════════════════ */
 function render(){
   const app=document.getElementById('app');
-  if(S.screen==='login'){app.innerHTML=rLogin();return;}
-  if(S.screen==='pin'){app.innerHTML=rPin();return;}
-  if(S.screen==='chg'){app.innerHTML=rChg();return;}
-  if(S.screen==='rst'){app.innerHTML=rRst();return;}
+  if(S.screen==='login'){app.innerHTML=rLogin();focusSearch();return;}
+  if(S.screen==='pin')  {app.innerHTML=rPin();return;}
+  if(S.screen==='chg')  {app.innerHTML=rChg();return;}
+  if(S.screen==='rst')  {app.innerHTML=rRst();return;}
   app.innerHTML=rApp();
+  renderModal();
 }
 
+function focusSearch(){
+  setTimeout(()=>{const el=document.getElementById('srch');if(el)el.focus();},150);
+}
+
+/* ═══════════════════════════════════════════════════
+   LOGIN — search + filtered list
+═══════════════════════════════════════════════════ */
 function rLogin(){
-  const card=s=>`<div class="nc ${S.selId===s.id?'sel':''}" onclick="selU(${s.id})">
-    <div class="nc-av ${avc(s.color)}">${s.initials}</div>
-    <div><div class="nc-name">${s.name}</div><div class="nc-role">${s.role==='manager'?'Manager':'Analyst'}</div></div>
+  const q=S.query.trim().toLowerCase();
+  const all=CONFIG.appUsers;
+  const filtered=q?all.filter(s=>s.name.toLowerCase().includes(q)):all;
+  const groups=[{label:'Managers',items:filtered.filter(s=>s.role==='manager')},{label:'Analysts',items:filtered.filter(s=>s.role==='analyst')}];
+  const resultRows=groups.map(g=>g.items.length?`
+    <div style="padding:6px 14px 4px;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;">${g.label}</div>
+    ${g.items.map(s=>`<div class="ri" onclick="selU(${s.id})">
+      <div class="ri-av ${avc(s.color)}">${s.initials}</div>
+      <div><div class="ri-name">${s.name}</div><div class="ri-role">${s.role==='manager'?'Manager':'Analyst'}</div></div>
+    </div>`).join('')}`:'').join('');
+  return`<div class="login-screen">
+    <div class="login-glow"></div>
+    <div class="login-top">
+      <div class="login-eye"><div class="login-dot"></div>Emtel SOC</div>
+      <div class="login-h1">SOC<br><span>Transport</span></div>
+      <div class="login-sub">Real-time transport management</div>
+    </div>
+    <div class="login-body">
+      <div class="ig">
+        <div class="inp-label" style="margin-bottom:10px;">Who are you?</div>
+        <div class="srch-wrap">
+          <div class="srch-icon">${I.search}</div>
+          <input id="srch" class="srch-inp" type="text" placeholder="Search your name…"
+            value="${S.query}" oninput="S.query=this.value;render()"
+            autocomplete="off" autocorrect="off" autocapitalize="words"/>
+        </div>
+        ${filtered.length?`<div class="results" style="margin-top:6px;">${resultRows}</div>`:
+          q?`<div class="results" style="margin-top:6px;"><div class="no-res">No match found</div></div>`:
+          `<div class="srch-hint">Type your name above to sign in</div>`}
+      </div>
+    </div>
   </div>`;
-  return`<div class="login"><div class="login-top">
-    <div class="login-logo">Emtel SOC</div>
-    <div class="login-title">SOC Transport</div>
-    <div class="login-sub">Select your name to sign in</div>
-  </div><div class="login-body">
-    <div class="login-sec">Managers</div><div class="ng">${mgrs().map(card).join('')}</div>
-    <div class="login-sec">Analysts</div><div class="ng">${anas().map(card).join('')}</div>
-  </div></div>`;
 }
 
-function selU(id){S.selId=id;S.pinBuf='';S.pinErr=false;S.pinMode='login';S.screen='pin';render();}
+function selU(id){S.selId=id;S.query='';S.pinBuf='';S.pinErr=false;S.pinMode='login';S.screen='pin';render();document.activeElement?.blur();}
 
+/* ═══════════════════════════════════════════════════
+   PIN
+═══════════════════════════════════════════════════ */
 function rPin(){
   const u=byId(S.selId);
   const dots=[0,1,2,3].map(i=>`<div class="pd ${i<S.pinBuf.length?'f':''} ${S.pinErr&&i<S.pinBuf.length?'e':''}"></div>`).join('');
   const keys=[1,2,3,4,5,6,7,8,9,'','0','⌫'].map(k=>k===''?`<div class="pk emp"></div>`:`<button class="pk ${k==='⌫'?'del':''}" onclick="pK('${k}')">${k}</button>`).join('');
-  return`<div class="pin-screen">
+  return`<div class="pin-screen"><div class="pin-glow"></div>
     <div class="pin-who">${u?.name||''}</div>
-    <div class="pin-title">Enter your PIN</div>
-    <div class="pin-hint">Default PIN is ${CONFIG.defaultPin}<br>if you haven't changed it yet</div>
+    <div class="pin-title">Enter PIN</div>
+    <div class="pin-hint">Default is <strong>${CONFIG.defaultPin}</strong> if you haven't<br>set a personal PIN yet</div>
     <div class="pin-dots">${dots}</div>
     <div class="pin-grid">${keys}</div>
-    ${S.pinErr?`<div class="pin-err">Incorrect PIN — try again</div>`:''}
+    ${S.pinErr?`<div class="pin-err">Incorrect PIN — try again</div>`:'<div style="height:20px;"></div>'}
     <div class="pin-link" onclick="goRst(${S.selId})">Forgot PIN?</div>
-    <div class="pin-back" onclick="goLogin()">← Back</div>
+    <div class="pin-back" onclick="goLogin()">← Different person</div>
   </div>`;
 }
-
 function pK(k){
   if(k==='⌫'){S.pinBuf=S.pinBuf.slice(0,-1);S.pinErr=false;render();return;}
   if(S.pinBuf.length>=4)return;
   S.pinBuf+=k;render();
   if(S.pinBuf.length===4)setTimeout(chkPin,120);
 }
-
 function chkPin(){
   if(S.pinBuf===LS.getPin(S.selId)){
     S.user=byId(S.selId);LS.setSess(S.selId);
     S.screen='app';S.pinBuf='';S.pinErr=false;dbLoad();
-  }else{
-    S.pinErr=true;setTimeout(()=>{S.pinBuf='';S.pinErr=false;render();},800);render();
-  }
+  }else{S.pinErr=true;setTimeout(()=>{S.pinBuf='';S.pinErr=false;render();},800);render();}
 }
-
 function goLogin(){S.screen='login';S.selId=null;S.pinBuf='';S.pinErr=false;render();}
 
+/* ═══════════════════════════════════════════════════
+   CHANGE PIN
+═══════════════════════════════════════════════════ */
 function rChg(){
-  const step={old:['Verify current PIN','Enter your current PIN'],new:['Choose new PIN','Enter any 4-digit PIN'],cfm:['Confirm new PIN','Enter your new PIN again']};
+  const step={old:['Verify identity','Enter your current PIN'],new:['New PIN','Choose any 4 digits'],cfm:['Confirm PIN','Re-enter your new PIN']};
   const[title,hint]=step[S.pinMode]||step.old;
   const buf=S.pinMode==='cfm'?S.pinNew:S.pinBuf;
   const dots=[0,1,2,3].map(i=>`<div class="pd ${i<buf.length?'f':''} ${S.pinErr&&i<buf.length?'e':''}"></div>`).join('');
   const keys=[1,2,3,4,5,6,7,8,9,'','0','⌫'].map(k=>k===''?`<div class="pk emp"></div>`:`<button class="pk ${k==='⌫'?'del':''}" onclick="cpK('${k}')">${k}</button>`).join('');
-  return`<div class="pin-screen">
+  return`<div class="pin-screen"><div class="pin-glow"></div>
     <div class="pin-who">${S.user?.name}</div>
     <div class="pin-title">${title}</div>
     <div class="pin-hint">${hint}</div>
     <div class="pin-dots">${dots}</div>
     <div class="pin-grid">${keys}</div>
-    ${S.pinErr?`<div class="pin-err">${S.pinMode==='cfm'?'PINs do not match':'Incorrect PIN'}</div>`:''}
+    ${S.pinErr?`<div class="pin-err">${S.pinMode==='cfm'?'PINs do not match':'Incorrect PIN'}</div>`:'<div style="height:20px;"></div>'}
     <div class="pin-back" onclick="canCP()">Cancel</div>
   </div>`;
 }
-
 function cpK(k){
   const isCfm=S.pinMode==='cfm';
   if(k==='⌫'){if(isCfm)S.pinNew=S.pinNew.slice(0,-1);else S.pinBuf=S.pinBuf.slice(0,-1);S.pinErr=false;render();return;}
@@ -347,35 +584,36 @@ function cpK(k){
   render();
   if((isCfm?S.pinNew:S.pinBuf).length===4)setTimeout(stepCP,120);
 }
-
 function stepCP(){
   if(S.pinMode==='old'){
     if(S.pinBuf===LS.getPin(S.user.id)){S.pinMode='new';S.pinBuf='';S.pinErr=false;}
     else{S.pinErr=true;setTimeout(()=>{S.pinBuf='';S.pinErr=false;render();},800);}
   }else if(S.pinMode==='new'){S.pinMode='cfm';S.pinNew='';S.pinErr=false;}
   else if(S.pinMode==='cfm'){
-    if(S.pinNew===S.pinBuf){LS.setPin(S.user.id,S.pinBuf);toast('PIN updated!');setTimeout(()=>{S.screen='app';S.pinBuf='';S.pinNew='';S.pinMode='login';render();},500);return;}
+    if(S.pinNew===S.pinBuf){LS.setPin(S.user.id,S.pinBuf);toast('PIN updated');setTimeout(()=>{S.screen='app';S.pinBuf='';S.pinNew='';S.pinMode='login';render();},500);return;}
     else{S.pinErr=true;setTimeout(()=>{S.pinNew='';S.pinErr=false;render();},800);}
   }
   render();
 }
 function canCP(){S.screen='app';S.pinBuf='';S.pinNew='';S.pinMode='login';S.pinErr=false;render();}
 
+/* ═══════════════════════════════════════════════════
+   RESET PIN
+═══════════════════════════════════════════════════ */
 function rRst(){
   const tid=S.pinTarget||S.selId,target=byId(tid);
   const dots=[0,1,2,3].map(i=>`<div class="pd ${i<S.pinBuf.length?'f':''} ${S.pinErr&&i<S.pinBuf.length?'e':''}"></div>`).join('');
   const keys=[1,2,3,4,5,6,7,8,9,'','0','⌫'].map(k=>k===''?`<div class="pk emp"></div>`:`<button class="pk ${k==='⌫'?'del':''}" onclick="rpK('${k}')">${k}</button>`).join('');
-  return`<div class="pin-screen">
+  return`<div class="pin-screen"><div class="pin-glow"></div>
     <div class="pin-who">Reset PIN for ${target?.name}</div>
     <div class="pin-title">Manager override</div>
-    <div class="pin-hint">A manager enters the override PIN.<br>This resets ${target?.name}'s PIN to ${CONFIG.defaultPin}.</div>
+    <div class="pin-hint">A manager enters the override PIN.<br>Resets to <strong>${CONFIG.defaultPin}</strong>.</div>
     <div class="pin-dots">${dots}</div>
     <div class="pin-grid">${keys}</div>
-    ${S.pinErr?`<div class="pin-err">Incorrect override PIN</div>`:''}
+    ${S.pinErr?`<div class="pin-err">Incorrect override PIN</div>`:'<div style="height:20px;"></div>'}
     <div class="pin-back" onclick="canRP()">Cancel</div>
   </div>`;
 }
-
 function goRst(tid){S.pinTarget=tid;S.pinBuf='';S.pinErr=false;S.screen='rst';render();}
 function rpK(k){
   if(k==='⌫'){S.pinBuf=S.pinBuf.slice(0,-1);S.pinErr=false;render();return;}
@@ -391,29 +629,57 @@ function chkRP(){
 }
 function canRP(){S.pinBuf='';S.pinErr=false;S.screen=S.user?'app':'pin';render();}
 
+/* ═══════════════════════════════════════════════════
+   APP SHELL
+═══════════════════════════════════════════════════ */
 function rApp(){
-  const u=S.user,tab=isMgr(u)?S.mTab:S.sTab;
-  const titles={declare:'Declare transport',history:'My history',special:'Special transport',account:'My account',today:"Today's log",recon:fmtM(),events:'Special events'};
+  const u=S.user;
   const body=S.loading?`<div class="loading"><div class="spin"></div>Loading…</div>`
-    :S.err?`<div class="sec"><div class="err-bar">${S.err}</div><button class="btn btn-p" onclick="dbLoad()">Retry</button></div>`
+    :S.err?`<div class="pg"><div class="err-box">${S.err}</div><button class="btn btn-s" onclick="dbLoad()">Retry</button></div>`
     :isMgr(u)?rMgr():rStaff();
   const nav=isMgr(u)?rMNav():rSNav();
-  return`<div><div class="hdr">
-    <div><div class="hdr-title">${titles[tab]||'SOC Transport'}</div><div class="hdr-sub">${u?.name} · ${isMgr(u)?'Manager':'Analyst'}</div></div>
-    <div class="hdr-av ${avc(u?.color)}" onclick="goAcct()">${u?.initials}</div>
-  </div><div class="scroll">${body}</div>${nav}</div>`;
+  const tab=isMgr(u)?S.mTab:S.sTab;
+  const titles={declare:'Declare',history:'History',special:'Special Transport',account:'Account',
+                today:"Today's Log",events:'Special Events',tools:'Tools',month:'Month-end'};
+  // Tool sub-titles
+  const toolTitles={staff:'Staff Directory',roster:'Roster Tools',logidis:'Logidis Validator'};
+  const title=S.toolView?toolTitles[S.toolView]:(titles[tab]||'SOC Transport');
+  const showBack=!!S.toolView;
+  return`<div>
+    <div class="topbar">
+      <div>
+        ${showBack?`<div class="tb-back" onclick="S.toolView=null;render()">← Tools</div>`:`<div class="tb-label">Emtel SOC</div>`}
+        <div class="tb-title">${title}</div>
+      </div>
+      <div class="tb-right">
+        ${S.toolView==='staff'?`<div style="color:var(--blue-l);cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;" onclick="openStaffForm(null)">${I.plus}</div>`:''}
+        <div class="tb-av ${avc(u?.color)}" onclick="goAcct()" title="${u?.name}">${u?.initials}</div>
+      </div>
+    </div>
+    <div class="scroll">${body}</div>
+    ${nav}
+  </div>`;
 }
 
 function rSNav(){
-  return`<div class="bnav">${[{k:'declare',l:'Declare',i:I.cal},{k:'history',l:'History',i:I.chart},{k:'special',l:'Special',i:I.star},{k:'account',l:'Me',i:I.user}]
+  return`<div class="bnav">${[{k:'declare',l:'Declare',i:I.cal},{k:'history',l:'History',i:I.bar},{k:'special',l:'Special',i:I.star},{k:'account',l:'Me',i:I.user}]
     .map(t=>`<button class="nb ${S.sTab===t.k?'on':''}" onclick="setST('${t.k}')">${t.i}<span>${t.l}</span></button>`).join('')}</div>`;
 }
 function rMNav(){
   const pc=pCnt();
-  return`<div class="bnav">${[{k:'today',l:'Today',i:I.list},{k:'events',l:'Events',i:I.bell,d:pc>0},{k:'recon',l:'Month',i:I.doc},{k:'account',l:'Me',i:I.user}]
-    .map(t=>`<button class="nb ${S.mTab===t.k?'on':''} ${t.d?'nb-dot':''}" onclick="setMT('${t.k}')">${t.i}<span>${t.l}</span></button>`).join('')}</div>`;
+  return`<div class="bnav">${[
+    {k:'today',l:'Today',i:I.list},
+    {k:'events',l:'Events',i:I.bell,d:pc>0},
+    {k:'tools',l:'Tools',i:I.tool},
+    {k:'month',l:'Month',i:I.doc},
+    {k:'account',l:'Me',i:I.user},
+  ].map(t=>`<button class="nb ${S.mTab===t.k?'on':''}" onclick="setMT('${t.k}')" style="position:relative;">
+    ${t.i}<span>${t.l}</span>${t.d?`<div class="nb-pip"></div>`:''}</button>`).join('')}</div>`;
 }
 
+/* ═══════════════════════════════════════════════════
+   STAFF TABS
+═══════════════════════════════════════════════════ */
 function rStaff(){
   if(S.sTab==='declare')return rDecl();
   if(S.sTab==='history')return rHist();
@@ -422,256 +688,444 @@ function rStaff(){
   return'';
 }
 
+/* ── Declare ─────────────────────────────────────── */
 function rDecl(){
   const uid=S.user.id,isToday=S.date===tod(),ex=dFor(uid,S.date);
-  return`<div class="sec">
-    <div class="ig"><div class="lbl">Date</div><div style="display:flex;gap:8px;">
-      <input type="date" class="inp" value="${S.date}" max="${tod()}" onchange="setDt(this.value)" style="flex:1;"/>
-      ${!isToday?`<button class="btn btn-o btn-sm" onclick="setDt('${tod()}')">Today</button>`:''}
-    </div></div>
-    ${!isToday?`<div style="background:#FEF3C7;border-radius:10px;padding:9px 12px;font-size:12px;font-weight:700;color:#92400E;margin-bottom:14px;">Logging for a past date — will be marked backdated</div>`:''}
-    ${S.err?`<div class="err-bar">${S.err}</div>`:''}
+  return`<div class="pg fu">
+    <div class="ig">
+      <div class="inp-label">Date</div>
+      <div style="display:flex;gap:8px;">
+        <input type="date" class="inp" value="${S.date}" max="${tod()}" onchange="setDt(this.value)" style="flex:1;"/>
+        ${!isToday?`<button class="btn btn-s btn-sm2" onclick="setDt('${tod()}')">Today</button>`:''}
+      </div>
+    </div>
+    ${!isToday?`<div class="back-warn">⚠ Past date — entry will be marked backdated</div>`:''}
+    ${S.err?`<div class="err-box">${S.err}</div>`:''}
     ${ex?rDone(ex):rDForm()}
   </div>`;
 }
-
 function rDone(d){
-  const sh=SHIFTS[d.shift],L={logidis:'Logidis',own:'Own vehicle',bus:'Public bus',auto:'Public transport'};
-  return`<div style="background:#F0FDF4;border:2px solid #86EFAC;border-radius:16px;padding:18px;text-align:center;">
-    <div style="font-size:15px;font-weight:800;color:#15803D;margin-bottom:8px;">Already submitted</div>
-    <div style="font-size:13px;color:#166534;margin-bottom:12px;">${fmtD(d.date)}</div>
+  const s=SH[d.shift],L={logidis:'Logidis',own:'Own vehicle',bus:'Public bus',auto:'Public transport'};
+  return`<div class="done-card">
+    <div style="font-size:32px;margin-bottom:10px;">✓</div>
+    <div style="font-size:16px;font-weight:800;color:#34D399;letter-spacing:-.02em;margin-bottom:5px;">Submitted</div>
+    <div style="font-size:13px;color:rgba(52,211,153,.6);margin-bottom:14px;">${fmtD(d.date)} · ${s?.label}</div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
-      <span class="bdg ${d.shift==='A'?'ba':d.shift==='B'?'bb':'bc'}">${d.shift} · ${sh?.time}</span>
-      ${d.leg_in?`<span class="bdg ${d.leg_in==='logidis'?'bl':'br'}">IN: ${L[d.leg_in]||d.leg_in}</span>`:''}
-      ${d.leg_out?`<span class="bdg ${d.leg_out==='logidis'?'bl':'br'}">OUT: ${L[d.leg_out]||d.leg_out}</span>`:''}
+      ${d.leg_in?`<span class="b ${d.leg_in==='logidis'?'b-g':'b-a'}">IN — ${L[d.leg_in]||d.leg_in}</span>`:''}
+      ${d.leg_out?`<span class="b ${d.leg_out==='logidis'?'b-g':'b-a'}">OUT — ${L[d.leg_out]||d.leg_out}</span>`:''}
     </div>
-    <div style="font-size:12px;color:#94A3B8;margin-top:12px;">To correct an entry, contact your manager</div>
+    <div style="font-size:12px;color:rgba(52,211,153,.45);margin-top:14px;">Contact your manager to correct an entry</div>
   </div>`;
 }
-
 function rDForm(){
-  let h=`<div class="lbl" style="margin-bottom:8px;">Your shift</div>
-    <div class="shift-grid">${['A','B','C'].map(k=>`<div class="sc ${S.shift===k?'on'+k:''}" onclick="setSh('${k}')"><div class="sn">Shift ${k}</div><div class="st">${SHIFTS[k].time}</div></div>`).join('')}</div>`;
+  let h=`<div class="sh">Your shift</div>
+    <div class="shift-row">${['A','B','C'].map(k=>`
+      <div class="sc ${S.shift===k?'on'+k:''}" onclick="setSh('${k}')">
+        <div class="sn">Shift ${k}</div><div class="st">${SH[k].time}</div>
+      </div>`).join('')}</div>`;
   if(S.shift){
-    h+=`<div class="lbl" style="margin-bottom:10px;">Your journeys</div>`;
-    SHIFTS[S.shift].legs.forEach(leg=>{h+=rLeg(leg);});
-    const need=SHIFTS[S.shift].legs.filter(l=>l.provided).length,done=Object.keys(S.choices).length,ok=done>=need;
-    h+=`<button class="btn btn-p ${ok?'':'disabled'}" ${ok?'':'disabled'} onclick="subD()" style="margin-top:4px;">${ok?'Submit declaration':'Complete all journey choices above'}</button>`;
-  }else h+=`<div class="empty">Select your shift above to continue</div>`;
+    h+=`<div class="sh" style="margin-top:6px;">Your journeys</div>`;
+    SH[S.shift].legs.forEach(leg=>{h+=rLeg(leg);});
+    const need=SH[S.shift].legs.filter(l=>l.provided).length,done=Object.keys(S.choices).length,ok=done>=need;
+    h+=`<button class="btn ${ok?'btn-p':'btn-s'}" ${ok?'':'disabled'} onclick="subD()" style="margin-top:8px;">${ok?'Submit Declaration':'Complete all journey choices above'}</button>`;
+  }else h+=`<div class="empty-state"><div class="empty-icon">🚌</div><div class="empty-text">Select your shift above<br>to continue</div></div>`;
   return h;
 }
-
 function rLeg(leg){
   const c=S.choices[leg.id],dv=leg.id==='in'?S.dIn:S.dOut,pv=leg.id==='in'?S.pIn:S.pOut;
   const ut=leg.id==='in'?S.uIn:S.uOut,ud=leg.id==='in'?S.udIn:S.udOut;
-  let h=`<div class="leg"><div class="leg-h"><span class="leg-name">${leg.label} · ${leg.time}</span>
-    ${leg.provided?`<span class="bdg" style="background:#DCFCE7;color:#166534;font-size:10px;">Transport available</span>`:''}
+  let h=`<div class="leg"><div class="leg-head">
+    <div class="leg-title">${leg.label} <span style="color:var(--t3);font-weight:500;font-size:13px;">${leg.time}</span></div>
+    ${leg.provided?`<span class="b b-g" style="font-size:10px;">Available</span>`:''}
   </div>`;
   if(leg.provided){
     h+=`<div class="choices">${[{k:'logidis',l:'Logidis'},{k:'own',l:'Own vehicle'},{k:'bus',l:'Public bus'}].map(o=>
       `<button class="cb ${c===o.k?o.k==='logidis'?'cL':o.k==='own'?'cO':'cB':''}" onclick="pick('${leg.id}','${o.k}')">${o.l}</button>`
     ).join('')}</div>`;
-    if(c==='logidis')h+=`<div class="drv-box"><div class="drv-title">Logidis vehicle details</div>
+    if(c==='logidis')h+=`<div class="drv-wrap"><div class="drv-label">Logidis vehicle details</div>
       <div class="irow">
-        <div style="flex:1;"><div class="lbl">Driver name</div><input class="inp" style="padding:9px 11px;font-size:13px;" placeholder="e.g. Jean-Pierre" value="${dv}" oninput="S.${leg.id==='in'?'dIn':'dOut'}=this.value"/></div>
-        <div style="flex:1;"><div class="lbl">Car plate</div><input class="inp" style="padding:9px 11px;font-size:13px;text-transform:uppercase;" placeholder="e.g. B 1234 X" value="${pv}" oninput="S.${leg.id==='in'?'pIn':'pOut'}=this.value.toUpperCase()"/></div>
+        <div style="flex:1;"><div class="inp-label">Driver name</div><input class="inp" style="padding:10px 12px;font-size:13px;" placeholder="e.g. Jean-Pierre" value="${dv}" oninput="S.${leg.id==='in'?'dIn':'dOut'}=this.value"/></div>
+        <div style="flex:1;"><div class="inp-label">Car plate</div><input class="inp" style="padding:10px 12px;font-size:13px;text-transform:uppercase;" placeholder="B 1234 X" value="${pv}" oninput="S.${leg.id==='in'?'pIn':'pOut'}=this.value.toUpperCase()"/></div>
       </div></div>`;
-    if(c&&c!=='logidis')h+=`<div class="refund-note">Bus fare refund eligible for this leg</div>`;
+    if(c&&c!=='logidis')h+=`<div class="refund-pill">💳 Bus fare refund eligible for this leg</div>`;
   }else{
-    h+=`<div class="fixed-note">No company transport scheduled for this leg</div>
-      <div class="refund-note">Bus fare refund eligible — auto-included</div>
+    h+=`<div class="fixed-pill">No company transport scheduled for this leg</div>
+      <div class="refund-pill" style="margin-top:8px;">💳 Refund eligible — auto-included</div>
       <div class="divider"></div>
       <div class="tog-row" onclick="togU('${leg.id}')">
-        <span class="tog-lbl">Company transport was provided today?</span>
-        <div class="tog ${ut?'on':''}"><div class="tog-th"></div></div>
+        <span class="tog-label">Company transport was provided today?</span>
+        <div class="tog ${ut?'on':''}"><div class="tog-k"></div></div>
       </div>`;
-    if(ut)h+=`<div class="unsch-box">
-      <div style="font-size:11px;font-weight:700;color:#A21CAF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Unscheduled transport details</div>
-      <div class="ig"><div class="lbl">Actual time</div><input type="time" class="inp" style="padding:9px 11px;font-size:13px;" value="${ud.time||''}" onchange="setUD('${leg.id}','time',this.value)"/></div>
+    if(ut)h+=`<div class="unsch-panel"><div class="unsch-head">Unscheduled transport details</div>
+      <div class="ig"><div class="inp-label">Actual time</div><input type="time" class="inp" style="padding:10px 12px;font-size:13px;" value="${ud.time||''}" onchange="setUD('${leg.id}','time',this.value)"/></div>
       <div class="irow">
-        <div style="flex:1;" class="ig"><div class="lbl">Driver name</div><input class="inp" style="padding:9px 11px;font-size:13px;" placeholder="Optional" value="${ud.driver||''}" oninput="setUD('${leg.id}','driver',this.value)"/></div>
-        <div style="flex:1;" class="ig"><div class="lbl">Car plate</div><input class="inp" style="padding:9px 11px;font-size:13px;text-transform:uppercase;" placeholder="Optional" value="${ud.plate||''}" oninput="setUD('${leg.id}','plate',this.value.toUpperCase())"/></div>
+        <div style="flex:1;" class="ig"><div class="inp-label">Driver</div><input class="inp" style="padding:10px 12px;font-size:13px;" placeholder="Optional" value="${ud.driver||''}" oninput="setUD('${leg.id}','driver',this.value)"/></div>
+        <div style="flex:1;" class="ig"><div class="inp-label">Plate</div><input class="inp" style="padding:10px 12px;font-size:13px;text-transform:uppercase;" placeholder="Optional" value="${ud.plate||''}" oninput="setUD('${leg.id}','plate',this.value.toUpperCase())"/></div>
       </div>
-      <div class="ig"><div class="lbl">Reason</div><input class="inp" style="padding:9px 11px;font-size:13px;" placeholder="e.g. Heavy rain, cyclone warning…" value="${ud.reason||''}" oninput="setUD('${leg.id}','reason',this.value)"/>
-      <div style="font-size:11px;color:#94A3B8;margin-top:4px;">Manager may adjust wording</div></div>
+      <div class="ig"><div class="inp-label">Reason</div><input class="inp" style="padding:10px 12px;font-size:13px;" placeholder="e.g. Heavy rain, cyclone warning…" value="${ud.reason||''}" oninput="setUD('${leg.id}','reason',this.value)"/>
+      <div style="font-size:11px;color:var(--t3);margin-top:6px;">Manager may adjust wording</div></div>
     </div>`;
   }
   return h+'</div>';
 }
 
+/* ── History ─────────────────────────────────────── */
 function rHist(){
   const uid=S.user.id,hist=uDecls(uid);
+  if(!hist.length)return`<div class="pg fu"><div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">No declarations yet.<br>Use Declare to log your first entry.</div></div></div>`;
   const logT=hist.reduce((s,h)=>s+(h.leg_in==='logidis'?1:0)+(h.leg_out==='logidis'?1:0),0);
   const refD=hist.filter(h=>isRef(h.leg_in)||isRef(h.leg_out)).length;
   const c14=[...hist].slice(0,14).reverse();
   const bars=c14.map(e=>{
     const l=(e.leg_in==='logidis'?1:0)+(e.leg_out==='logidis'?1:0),r=(isRef(e.leg_in)?1:0)+(isRef(e.leg_out)?1:0);
     const sp=S.events.some(s=>s.analyst_id===uid&&s.date===e.date),t=Math.max(l+r,1),lp=Math.round((l/t)*100);
-    return`<div class="chart-col"><div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:1px;">
-      ${l?`<div class="chart-bar" style="height:${lp}%;background:#10B981;"></div>`:''}
-      ${r?`<div class="chart-bar" style="height:${100-lp}%;background:#F59E0B;"></div>`:''}
-      ${sp?`<div style="height:3px;background:#EC4899;border-radius:0;"></div>`:''}
-    </div><div class="chart-lbl">${e.date.slice(8)}</div></div>`;
+    return`<div class="cc"><div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;">
+      ${l?`<div class="cb2" style="height:${lp}%;background:var(--green);"></div>`:''}
+      ${r?`<div class="cb2" style="height:${100-lp}%;background:var(--amber);"></div>`:''}
+      ${sp?`<div style="height:3px;background:var(--rose);border-radius:0;"></div>`:''}
+    </div><div class="cl">${e.date.slice(8)}</div></div>`;
   }).join('');
   const L={logidis:'Logidis',own:'Own vehicle',bus:'Public bus',auto:'Public transport'};
-  const items=hist.length?hist.map(e=>{
-    const sh=SHIFTS[e.shift],hasR=isRef(e.leg_in)||isRef(e.leg_out);
+  const items=hist.map(e=>{
+    const s2=SH[e.shift],hasR=isRef(e.leg_in)||isRef(e.leg_out);
     const spd=S.events.filter(s=>s.analyst_id===uid&&s.date===e.date&&!s.is_inline);
-    const drv=e.leg_in==='logidis'&&(e.driver_name_in||e.car_plate_in)?`<div style="font-size:11px;color:#64748B;margin-top:4px;">${e.driver_name_in||''} ${e.car_plate_in?'· '+e.car_plate_in:''}</div>`:'';
-    return`<div class="he"><div class="he-row">
-      <div><div class="he-date">${fmtD(e.date)}</div>${e.backdated?`<span class="tag-back">Backdated</span>`:''}</div>
+    const drv=e.leg_in==='logidis'&&(e.driver_name_in||e.car_plate_in)?`<div style="font-size:11px;color:var(--t3);margin-top:5px;">🚗 ${[e.driver_name_in,e.car_plate_in].filter(Boolean).join(' · ')}</div>`:'';
+    return`<div class="he"><div class="he-top">
+      <div><div class="he-date">${fmtD(e.date)}</div>${e.backdated?`<span class="back-chip">Backdated</span>`:''}</div>
       <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;">
-        <span class="bdg ${e.shift==='A'?'ba':e.shift==='B'?'bb':'bc'}">${e.shift}</span>
-        ${hasR?'<span class="bdg br">Refund</span>':''}${spd.length?'<span class="bdg bp">Special</span>':''}
+        <span class="b ${e.shift==='A'?'b-sa':e.shift==='B'?'b-sb':'b-sc'}">${e.shift}</span>
+        ${hasR?'<span class="b b-a">Refund</span>':''}${spd.length?'<span class="b b-r">Special</span>':''}
       </div></div>
-      <div class="he-bdgs">
-        ${e.leg_in?`<span class="bdg ${e.leg_in==='logidis'?'bl':'br'}">IN: ${L[e.leg_in]||e.leg_in}</span>`:''}
-        ${e.leg_out?`<span class="bdg ${e.leg_out==='logidis'?'bl':'br'}">OUT: ${L[e.leg_out]||e.leg_out}</span>`:''}
-        ${spd.map(s=>`<span class="bdg bp">Special ${s.direction?.toUpperCase()||''} ${s.event_time||''}</span>`).join('')}
+      <div class="he-pills">
+        ${e.leg_in?`<span class="b ${e.leg_in==='logidis'?'b-g':'b-a'}">IN — ${L[e.leg_in]||e.leg_in}</span>`:''}
+        ${e.leg_out?`<span class="b ${e.leg_out==='logidis'?'b-g':'b-a'}">OUT — ${L[e.leg_out]||e.leg_out}</span>`:''}
+        ${spd.map(s=>`<span class="b b-r">Special ${s.direction?.toUpperCase()||''} ${s.event_time||''}</span>`).join('')}
       </div>${drv}
     </div>`;
-  }).join(''):`<div class="empty">No declarations yet — use Declare tab to log your first entry</div>`;
-  return`<div class="sec">
-    <div class="met3"><div class="met"><div class="v">${hist.length}</div><div class="l">Days logged</div></div>
-      <div class="met"><div class="v">${logT}</div><div class="l">Logidis</div></div>
-      <div class="met"><div class="v" style="color:#15803D;">${refD}</div><div class="l">Refund days</div></div></div>
-    ${c14.length?`<div class="card"><div class="card-title">Last ${c14.length} days</div>
-      <div class="chart-wrap">${bars}</div>
-      <div class="legend"><div class="leg-it"><div class="leg-dot" style="background:#10B981;"></div>Logidis</div>
-        <div class="leg-it"><div class="leg-dot" style="background:#F59E0B;"></div>Refund-eligible</div>
-        <div class="leg-it"><div class="leg-dot" style="background:#EC4899;"></div>Special</div></div></div>`:''}
-    <div class="card"><div class="card-title">Full log — ${fmtM()}</div>${items}</div>
-  </div>`;
-}
-
-function rSpSt(){
-  const uid=S.user.id,sp=uEvs(uid);
-  const form=S.spShow?rSpForm():`<button class="btn btn-pk" style="margin-bottom:16px;" onclick="togSp(true)">+ Log a special transport trip</button>`;
-  const items=sp.length?sp.map(e=>`<div class="spc ${e.reviewed?'rev':''}">
-    <div class="flex-bet" style="margin-bottom:8px;">
-      <div><div style="font-size:13px;font-weight:700;">${fmtD(e.date)}</div>
-        <div style="font-size:12px;color:#64748B;margin-top:2px;">${e.direction?.toUpperCase()||''} · ${e.event_time||''}</div>
-        ${e.driver_name||e.car_plate?`<div style="font-size:11px;color:#64748B;">${e.driver_name||''} ${e.car_plate?'· '+e.car_plate:''}</div>`:''}</div>
-      <span class="bdg ${e.reviewed?'bo':'bg'}">${e.reviewed?'Reviewed':'Pending'}</span>
+  }).join('');
+  return`<div class="pg fu">
+    <div class="bento g3" style="margin-bottom:18px;">
+      <div class="tile tile-sm"><div class="tv">${hist.length}</div><div class="tl">Days logged</div></div>
+      <div class="tile tile-sm"><div class="tv" style="color:#34D399;">${logT}</div><div class="tl">Logidis</div></div>
+      <div class="tile tile-sm"><div class="tv" style="color:#FCD34D;">${refD}</div><div class="tl">Refund days</div></div>
     </div>
-    <div style="font-size:12px;color:#BE185D;background:#FCE7F3;border-radius:8px;padding:7px 10px;">${e.reason||''}</div>
-  </div>`).join(''):`<div class="empty">No special transport logged yet</div>`;
-  return`<div class="sec">
-    <div class="info-bar" style="background:#FCE7F3;color:#BE185D;">Use this tab when Logidis transport was provided <strong>outside your normal shift times</strong> — heavy rain, cyclone warning, road closure or any other exceptional situation.</div>
-    ${form}
-    ${!S.spShow?`<div style="font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">Your special transport history</div>${items}`:''}
+    <div class="card"><div class="card-body"><div class="card-title">Last ${c14.length} days</div>
+      <div class="chart">${bars}</div>
+      <div class="legend">
+        <div class="li"><div class="ld" style="background:var(--green);"></div>Logidis</div>
+        <div class="li"><div class="ld" style="background:var(--amber);"></div>Refund-eligible</div>
+        <div class="li"><div class="ld" style="background:var(--rose);"></div>Special event</div>
+      </div></div></div>
+    <div class="card"><div class="card-body"><div class="card-title">Full log — ${fmtM()}</div>${items}</div></div>
   </div>`;
 }
 
+/* ── Special (staff) ──────────────────────────────── */
+function rSpSt(){
+  const sp=uEvs(S.user.id);
+  const form=S.spShow?rSpForm():`<button class="btn btn-r" style="margin-bottom:18px;" onclick="togSp(true)">+ Log a special transport trip</button>`;
+  const items=sp.length?sp.map(e=>`<div class="spc ${e.reviewed?'rev':''}">
+    <div class="fb" style="margin-bottom:10px;">
+      <div>
+        <div style="font-size:14px;font-weight:700;">${fmtD(e.date)}</div>
+        <div style="font-size:12px;color:var(--t3);margin-top:3px;">${e.direction?.toUpperCase()||''} · ${e.event_time||''}</div>
+        ${e.driver_name||e.car_plate?`<div style="font-size:11px;color:var(--t3);margin-top:3px;">🚗 ${[e.driver_name,e.car_plate].filter(Boolean).join(' · ')}</div>`:''}</div>
+      <span class="b ${e.reviewed?'b-g':'b-z'}">${e.reviewed?'Reviewed':'Pending'}</span>
+    </div>
+    <div style="font-size:13px;color:#FB7185;background:var(--rose-d);border-radius:8px;padding:10px 12px;">${e.reason||''}</div>
+  </div>`).join(''):`<div class="empty-state"><div class="empty-icon">⭐</div><div class="empty-text">No special transport logged yet</div></div>`;
+  return`<div class="pg fu">
+    <div class="info-box" style="background:var(--rose-d);border:1px solid rgba(244,63,94,.15);color:#FB7185;">Use this tab when Logidis provided transport <strong>outside your normal shift times</strong> — heavy rain, cyclone warning, road closure or any exceptional situation.</div>
+    ${form}${!S.spShow?`<div class="sh" style="margin-top:4px;">History</div>${items}`:''}
+  </div>`;
+}
 function rSpForm(){
   const f=S.spForm,ok=f.direction&&f.time&&f.reason;
-  return`<div style="border:2px solid #EC4899;border-radius:16px;padding:16px;margin-bottom:16px;">
-    <div style="font-size:14px;font-weight:800;color:#BE185D;margin-bottom:14px;">Log a special transport trip</div>
-    <div class="ig"><div class="lbl">Date</div><input type="date" class="inp" value="${f.date||tod()}" max="${tod()}" onchange="spf('date',this.value)"/></div>
-    <div class="ig"><div class="lbl">Direction</div><div style="display:flex;gap:8px;">
-      <button class="btn btn-sm ${f.direction==='in'?'btn-p':'btn-o'}" style="flex:1;" onclick="spf('direction','in')">IN — to work</button>
-      <button class="btn btn-sm ${f.direction==='out'?'btn-p':'btn-o'}" style="flex:1;" onclick="spf('direction','out')">OUT — from work</button>
-    </div></div>
-    <div class="ig"><div class="lbl">Actual time</div><input type="time" class="inp" value="${f.time||''}" onchange="spf('time',this.value)"/></div>
+  return`<div style="background:var(--rose-d);border:1.5px solid rgba(244,63,94,.22);border-radius:16px;padding:18px;margin-bottom:18px;">
+    <div style="font-size:15px;font-weight:800;color:#FB7185;margin-bottom:16px;">Log special transport</div>
+    <div class="ig"><div class="inp-label">Date</div><input type="date" class="inp" value="${f.date||tod()}" max="${tod()}" onchange="spf('date',this.value)"/></div>
+    <div class="ig"><div class="inp-label">Direction</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-sm2 ${f.direction==='in'?'btn-p':'btn-s'}" style="flex:1;" onclick="spf('direction','in')">IN — to work</button>
+        <button class="btn btn-sm2 ${f.direction==='out'?'btn-p':'btn-s'}" style="flex:1;" onclick="spf('direction','out')">OUT — from work</button>
+      </div></div>
+    <div class="ig"><div class="inp-label">Actual time</div><input type="time" class="inp" value="${f.time||''}" onchange="spf('time',this.value)"/></div>
     <div class="irow">
-      <div style="flex:1;" class="ig"><div class="lbl">Driver name</div><input class="inp" style="padding:9px 11px;font-size:13px;" placeholder="Optional" value="${f.driver||''}" oninput="spf('driver',this.value)"/></div>
-      <div style="flex:1;" class="ig"><div class="lbl">Car plate</div><input class="inp" style="padding:9px 11px;font-size:13px;text-transform:uppercase;" placeholder="Optional" value="${f.plate||''}" oninput="spf('plate',this.value.toUpperCase())"/></div>
+      <div style="flex:1;" class="ig"><div class="inp-label">Driver</div><input class="inp" style="padding:10px 12px;font-size:13px;" placeholder="Optional" value="${f.driver||''}" oninput="spf('driver',this.value)"/></div>
+      <div style="flex:1;" class="ig"><div class="inp-label">Plate</div><input class="inp" style="padding:10px 12px;font-size:13px;text-transform:uppercase;" placeholder="Optional" value="${f.plate||''}" oninput="spf('plate',this.value.toUpperCase())"/></div>
     </div>
-    <div class="ig"><div class="lbl">Reason</div><input class="inp" style="padding:9px 11px;font-size:13px;" placeholder="e.g. Heavy rain, cyclone warning…" value="${f.reason||''}" oninput="spf('reason',this.value)"/>
-      <div style="font-size:11px;color:#94A3B8;margin-top:4px;">Manager may adjust the wording</div></div>
-    <button class="btn btn-p ${ok?'':'disabled'}" ${ok?'':'disabled'} onclick="subSp()" style="margin-bottom:8px;">Submit</button>
-    <button class="btn btn-o" onclick="togSp(false)">Cancel</button>
+    <div class="ig"><div class="inp-label">Reason</div><input class="inp" style="padding:10px 12px;font-size:13px;" placeholder="e.g. Heavy rain, cyclone warning…" value="${f.reason||''}" oninput="spf('reason',this.value)"/>
+      <div style="font-size:11px;color:var(--t3);margin-top:6px;">Manager may adjust wording</div></div>
+    <button class="btn ${ok?'btn-p':'btn-s'}" ${ok?'':'disabled'} onclick="subSp()" style="margin-bottom:10px;">Submit</button>
+    <button class="btn btn-s" onclick="togSp(false)">Cancel</button>
   </div>`;
 }
 
+/* ── Account ─────────────────────────────────────── */
 function rAcct(){
   const u=S.user,isM=isMgr(u);
-  return`<div class="sec">
-    <div style="padding:24px 0 20px;text-align:center;">
-      <div class="nc-av ${avc(u.color)}" style="width:72px;height:72px;font-size:24px;margin:0 auto 12px;">${u.initials}</div>
-      <div style="font-size:20px;font-weight:800;">${u.name}</div>
-      <div style="font-size:13px;color:#94A3B8;font-weight:600;margin-top:4px;">${isM?'Manager':'Analyst'} · Emtel SOC</div>
+  return`<div class="pg fu">
+    <div style="padding:32px 0 28px;text-align:center;">
+      <div class="rav ${avc(u.color)}" style="width:76px;height:76px;font-size:26px;margin:0 auto 14px;border:1.5px solid var(--line2);"></div>
+      <div style="font-size:22px;font-weight:800;letter-spacing:-.03em;">${u.name}</div>
+      <div style="font-size:13px;color:var(--t3);margin-top:5px;">${isM?'Manager':'Analyst'} · Emtel SOC</div>
     </div>
-    <div class="mi" onclick="stCP()"><div class="mi-left"><div class="mi-ico" style="background:#EFF6FF;font-size:18px;">🔑</div>
-      <div><div class="mi-lbl">Change PIN</div><div class="mi-sub">Update your 4-digit PIN</div></div></div><span style="color:#CBD5E1;font-size:20px;">›</span></div>
-    <div class="mi" onclick="goRst(${u.id})"><div class="mi-left"><div class="mi-ico" style="background:#FEF3C7;font-size:18px;">🔓</div>
-      <div><div class="mi-lbl">Reset PIN</div><div class="mi-sub">Manager override — resets to ${CONFIG.defaultPin}</div></div></div><span style="color:#CBD5E1;font-size:20px;">›</span></div>
-    <div class="mi" onclick="logout()" style="margin-top:16px;"><div class="mi-left"><div class="mi-ico" style="background:#FEE2E2;font-size:18px;">🚪</div>
-      <div><div class="mi-lbl" style="color:#B91C1C;">Sign out</div><div class="mi-sub">You'll need your PIN to sign back in</div></div></div><span style="color:#CBD5E1;font-size:20px;">›</span></div>
+    <div class="mi" onclick="stCP()"><div class="mi-left"><div class="mi-icon" style="background:var(--blue-d);">🔑</div>
+      <div><div class="mi-label">Change PIN</div><div class="mi-sub">Update your 4-digit PIN</div></div></div>
+      <div style="color:var(--t3);">${I.chev}</div></div>
+    <div class="mi" onclick="goRst(${u.id})"><div class="mi-left"><div class="mi-icon" style="background:var(--amber-d);">🔓</div>
+      <div><div class="mi-label">Reset PIN</div><div class="mi-sub">Manager override · resets to ${CONFIG.defaultPin}</div></div></div>
+      <div style="color:var(--t3);">${I.chev}</div></div>
+    <div class="mi" onclick="logout()" style="margin-top:8px;border-color:rgba(244,63,94,.14);">
+      <div class="mi-left"><div class="mi-icon" style="background:var(--rose-d);">🚪</div>
+        <div><div class="mi-label" style="color:#FB7185;">Sign out</div><div class="mi-sub">You'll need your PIN to sign back in</div></div></div>
+      <div style="color:var(--t3);">${I.chev}</div></div>
   </div>`;
 }
 
+/* ═══════════════════════════════════════════════════
+   MANAGER TABS
+═══════════════════════════════════════════════════ */
 function rMgr(){
-  if(S.mTab==='today')return rMToday();
-  if(S.mTab==='events')return rMEvs();
-  if(S.mTab==='recon')return rMRecon();
+  if(S.toolView) return rToolView();
+  if(S.mTab==='today')  return rMToday();
+  if(S.mTab==='events') return rMEvs();
+  if(S.mTab==='tools')  return rMTools();
+  if(S.mTab==='month')  return rMMonth();
   if(S.mTab==='account')return rAcct();
   return'';
 }
 
+/* ── Today ───────────────────────────────────────── */
 function rMToday(){
   const td=tod(),tdd=S.decls.filter(d=>d.date===td),total=anas().length;
   const logT=tdd.reduce((s,d)=>s+(d.leg_in==='logidis'?1:0)+(d.leg_out==='logidis'?1:0),0);
   const refT=tdd.reduce((s,d)=>s+(isRef(d.leg_in)?1:0)+(isRef(d.leg_out)?1:0),0);
   const spT=S.events.filter(e=>e.date===td).length;
-  const L={logidis:'Logidis',own:'Own',bus:'Bus',auto:'Auto'};
+  const L={logidis:'Log',own:'Own',bus:'Bus',auto:'Auto'};
   const rows=anas().map(a=>{
     const d=tdd.find(x=>x.analyst_id===a.id),hasSp=S.events.some(e=>e.analyst_id===a.id&&e.date===td);
-    const sh=d?.shift?SHIFTS[d.shift]:null;
+    const s2=d?.shift?SH[d.shift]:null;
     const cell=(val,prov)=>{
-      if(!prov)return`<span class="bdg bg" style="font-size:10px;">Auto</span>`;
-      if(!val)return`<span class="bdg bg" style="font-size:10px;">–</span>`;
-      return`<span class="bdg ${val==='logidis'?'bl':'br'}" style="font-size:10px;">${L[val]||val}</span>`;
+      if(!prov)return`<span class="b b-z" style="font-size:10px;">Auto</span>`;
+      if(!val) return`<span class="b b-z" style="font-size:10px;">–</span>`;
+      return`<span class="b ${val==='logidis'?'b-g':'b-a'}" style="font-size:10px;">${L[val]||val}</span>`;
     };
     return`<div class="rr"><div class="rav ${avc(a.color)}">${a.initials}</div>
-      <div style="flex:1;"><div class="rname">${a.name}</div><div class="rsub">${d?'Shift '+d.shift:'Not declared'}</div></div>
-      <div class="rbdgs">
-        ${sh?cell(d?.leg_in,sh.legs[0].provided):''}
-        ${sh?cell(d?.leg_out,sh.legs[1].provided):''}
-        ${hasSp?`<span class="bdg bp" style="font-size:10px;">Special</span>`:''}
-        <span class="bdg ${d?'bo':'bg'}" style="font-size:10px;">${d?'Done':'Pending'}</span>
+      <div style="flex:1;"><div class="rname">${a.name}</div>
+        <div class="rsub">${d?'Shift '+d.shift+' · '+SH[d.shift]?.time:'Not declared yet'}</div></div>
+      <div class="rbadges">
+        ${s2?cell(d?.leg_in,s2.legs[0].provided):''}
+        ${s2?cell(d?.leg_out,s2.legs[1].provided):''}
+        ${hasSp?`<span class="b b-r" style="font-size:10px;">Sp</span>`:''}
+        <span class="b ${d?'b-g':'b-z'}" style="font-size:10px;">${d?'Done':'–'}</span>
       </div></div>`;
   }).join('');
-  return`<div class="sec">
-    <div class="met4"><div class="met"><div class="v">${tdd.length}/${total}</div><div class="l">Declared</div></div>
-      <div class="met"><div class="v">${logT}</div><div class="l">Logidis</div></div>
-      <div class="met"><div class="v" style="color:#15803D;">${refT}</div><div class="l">Refund</div></div>
-      <div class="met"><div class="v" style="color:#BE185D;">${spT}</div><div class="l">Special</div></div></div>
-    <div style="font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;">${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>
-    <div class="roster">${rows||'<div class="empty">No analysts</div>'}</div>
+  return`<div class="pg fu">
+    <div class="bento g4" style="margin-bottom:18px;">
+      <div class="tile tile-sm"><div class="tv">${tdd.length}<span style="font-size:12px;color:var(--t3);">/${total}</span></div><div class="tl">Declared</div></div>
+      <div class="tile tile-sm"><div class="tv" style="color:#34D399;">${logT}</div><div class="tl">Logidis</div></div>
+      <div class="tile tile-sm"><div class="tv" style="color:#FCD34D;">${refT}</div><div class="tl">Refund</div></div>
+      <div class="tile tile-sm"><div class="tv" style="color:#FB7185;">${spT}</div><div class="tl">Special</div></div>
+    </div>
+    <div class="sh">${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>
+    <div class="roster">${rows||'<div class="empty-state"><div class="empty-text">No analysts</div></div>'}</div>
+    <button class="btn btn-s" onclick="dbLoad();toast('Refreshed')" style="margin-top:14px;">↻  Refresh data</button>
   </div>`;
 }
 
+/* ── Events ──────────────────────────────────────── */
 function rMEvs(){
   const sorted=[...S.events].filter(e=>!e.is_inline).sort((a,b)=>(a.reviewed===b.reviewed?0:a.reviewed?1:-1)||b.date.localeCompare(a.date));
+  if(!sorted.length)return`<div class="pg fu"><div class="empty-state"><div class="empty-icon">🔔</div><div class="empty-text">No special events logged yet</div></div></div>`;
   const items=sorted.map(e=>{
     const a=byId(e.analyst_id),isEd=S.editEvId===e.id;
     return`<div class="spc ${e.reviewed?'rev':''}">
-      <div class="flex-bet" style="margin-bottom:10px;">
-        <div style="display:flex;align-items:center;gap:10px;">
+      <div class="fb" style="margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:12px;">
           <div class="rav ${a?avc(a.color):'av-blue'}">${a?.initials||'?'}</div>
-          <div><div style="font-size:13px;font-weight:700;">${a?.name||'Unknown'}</div>
-            <div style="font-size:12px;color:#64748B;">${fmtD(e.date)} · ${e.direction?.toUpperCase()||''} · ${e.event_time||''}</div>
-            ${e.driver_name||e.car_plate?`<div style="font-size:11px;color:#64748B;">${e.driver_name||''} ${e.car_plate?'· '+e.car_plate:''}</div>`:''}</div>
+          <div><div style="font-size:14px;font-weight:700;">${a?.name||'Unknown'}</div>
+            <div style="font-size:12px;color:var(--t3);margin-top:2px;">${fmtD(e.date)} · ${e.direction?.toUpperCase()||''} · ${e.event_time||''}</div>
+            ${e.driver_name||e.car_plate?`<div style="font-size:11px;color:var(--t3);">🚗 ${[e.driver_name,e.car_plate].filter(Boolean).join(' · ')}</div>`:''}</div>
         </div>
-        <span class="bdg" style="${e.reviewed?'background:#DCFCE7;color:#15803D;':'background:#FEE2E2;color:#B91C1C;'}">${e.reviewed?'Reviewed':'New'}</span>
+        <span class="b ${e.reviewed?'b-g':'b-r'}">${e.reviewed?'Done':'New'}</span>
       </div>
-      ${isEd?`<input class="inp" id="ed-${e.id}" value="${e.reason||''}" style="margin-bottom:8px;font-size:13px;"/>`:
-        `<div style="font-size:13px;color:#BE185D;background:#FCE7F3;border-radius:8px;padding:8px 10px;margin-bottom:10px;">${e.reason||''}</div>`}
+      ${isEd?`<input class="inp" id="ed-${e.id}" value="${e.reason||''}" style="margin-bottom:10px;font-size:13px;"/>`:
+        `<div style="font-size:13px;color:#FB7185;background:var(--rose-d);border-radius:8px;padding:10px 12px;margin-bottom:12px;">${e.reason||''}</div>`}
       <div style="display:flex;gap:8px;">
-        ${isEd?`<button class="btn btn-p btn-sm" style="flex:1;" onclick="saveEd(${e.id})">Save</button><button class="btn btn-o btn-sm" style="flex:1;" onclick="canEd()">Cancel</button>`
-              :`<button class="btn btn-o btn-sm" style="flex:1;" onclick="editEv(${e.id})">Edit reason</button>
-               ${!e.reviewed?`<button class="btn btn-sm" style="flex:1;background:#10B981;color:#fff;" onclick="markRev(${e.id})">Mark reviewed</button>`
-                            :`<button class="btn btn-o btn-sm" style="flex:1;opacity:.4;" disabled>Reviewed</button>`}`}
+        ${isEd?`<button class="btn btn-p btn-sm2" style="flex:1;" onclick="saveEd(${e.id})">Save</button>
+                 <button class="btn btn-s btn-sm2" style="flex:1;" onclick="canEd()">Cancel</button>`
+               :`<button class="btn btn-s btn-sm2" style="flex:1;" onclick="editEv(${e.id})">Edit reason</button>
+                 ${!e.reviewed?`<button class="btn btn-g btn-sm2" style="flex:1;" onclick="markRev(${e.id})">Mark reviewed</button>`
+                              :`<button class="btn btn-s btn-sm2" style="flex:1;opacity:.3;" disabled>Reviewed</button>`}`}
       </div></div>`;
   }).join('');
-  return`<div class="sec">
-    <div class="info-bar" style="background:#FCE7F3;color:#BE185D;">Review and edit reason if needed, then mark as reviewed.</div>
-    ${sorted.length?items:'<div class="empty">No special events logged yet</div>'}
+  return`<div class="pg fu">
+    <div class="info-box" style="background:var(--rose-d);border:1px solid rgba(244,63,94,.15);color:#FB7185;">Review, edit reason if needed, then mark as reviewed. All auto-counted in reconciliation.</div>
+    ${items}
   </div>`;
 }
 
-function rMRecon(){
+/* ── Tools menu ───────────────────────────────────── */
+function rMTools(){
+  return`<div class="pg fu">
+    <div class="mi" onclick="S.toolView='staff';render()">
+      <div class="mi-left">
+        <div class="mi-icon" style="background:var(--blue-d);">👥</div>
+        <div><div class="mi-label">Staff Directory</div><div class="mi-sub">Add, edit and manage all transport staff</div></div>
+      </div><div style="color:var(--t3);">${I.chev}</div>
+    </div>
+    <div class="mi" onclick="S.toolView='roster';S.rosterData=[];S.rosterParsed=false;render()">
+      <div class="mi-left">
+        <div class="mi-icon" style="background:var(--green-d);">📅</div>
+        <div><div class="mi-label">Roster Tools</div><div class="mi-sub">Upload roster → export Logidis-ready Excel</div></div>
+      </div><div style="color:var(--t3);">${I.chev}</div>
+    </div>
+    <div class="mi" onclick="S.toolView='logidis';S.logidisRows=[];S.logidisValidated=[];S.logidisParsed=false;render()">
+      <div class="mi-left">
+        <div class="mi-icon" style="background:var(--amber-d);">🔍</div>
+        <div><div class="mi-label">Logidis Validator</div><div class="mi-sub">Upload billing → validate → export annotated Excel</div></div>
+      </div><div style="color:var(--t3);">${I.chev}</div>
+    </div>
+    <div class="mi" onclick="expCSV()">
+      <div class="mi-left">
+        <div class="mi-icon" style="background:var(--violet-d);">📊</div>
+        <div><div class="mi-label">Export Declarations CSV</div><div class="mi-sub">Download all declaration data</div></div>
+      </div><div style="color:var(--t3);">${I.dl}</div>
+    </div>
+  </div>`;
+}
+
+/* ── Tool sub-views router ───────────────────────── */
+function rToolView(){
+  if(S.toolView==='staff')   return rStaffDir();
+  if(S.toolView==='roster')  return rRosterTool();
+  if(S.toolView==='logidis') return rLogidisTool();
+  return'';
+}
+
+/* ── Staff Directory ─────────────────────────────── */
+function rStaffDir(){
+  const active=S.staffProfiles.filter(s=>s.active);
+  const inactive=S.staffProfiles.filter(s=>!s.active);
+  const nm=active.filter(s=>s.team==='NM');
+  const sm=active.filter(s=>s.team==='SM');
+  const cardFn=s=>`<div class="staff-card ${!s.active?'staff-inactive':''}" onclick="openStaffForm(${s.id})">
+    <div class="rav ${avc(s.color)}">${s.initials||s.name.slice(0,2).toUpperCase()}</div>
+    <div style="flex:1;">
+      <div style="font-size:14px;font-weight:700;">${s.name}</div>
+      <div style="font-size:12px;color:var(--t3);margin-top:2px;">${s.location||'No location set'} ${s.contact_no?'· '+s.contact_no:''}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+      <span class="b ${s.team==='NM'?'b-nm':'b-sm'}">${s.team}</span>
+      ${!s.needs_transport?`<span class="b b-z" style="font-size:10px;">No transport</span>`:''}
+    </div>
+  </div>`;
+  return`<div class="pg fu">
+    <div class="sh">SOC-NM Team (${nm.length})</div>
+    ${nm.length?nm.map(cardFn).join(''):'<div class="empty-state"><div class="empty-text">No NM staff</div></div>'}
+    <div class="sh" style="margin-top:6px;">SOC-SM Team (${sm.length})</div>
+    ${sm.length?sm.map(cardFn).join(''):'<div class="empty-state"><div class="empty-text">No SM staff</div></div>'}
+    ${inactive.length?`<div class="sh" style="margin-top:6px;">Inactive (${inactive.length})</div>${inactive.map(cardFn).join('')}`:''}
+  </div>`;
+}
+
+/* ── Roster Tool ─────────────────────────────────── */
+function rRosterTool(){
+  if(!S.rosterParsed){
+    return`<div class="pg fu">
+      <div class="info-box" style="background:var(--blue-d);border:1px solid rgba(37,99,235,.2);color:#93C5FD;">Upload your internal roster Excel (the one you share with the team). The app will parse all shifts and generate a clean Logidis-ready roster with staff locations.</div>
+      <div class="upload-zone" id="roster-drop" onclick="document.getElementById('roster-file').click()"
+        ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')"
+        ondrop="event.preventDefault();this.classList.remove('drag');handleRosterFile(event.dataTransfer.files[0])">
+        <input type="file" id="roster-file" accept=".xlsx,.xls" onchange="handleRosterFile(this.files[0])"/>
+        <div class="upload-icon">${I.up}</div>
+        <div class="upload-title">Upload roster Excel</div>
+        <div class="upload-sub">Drag & drop or click to browse<br>Accepts .xlsx / .xls</div>
+      </div>
+    </div>`;
+  }
+  // Show parsed roster + export button
+  const byDate={};
+  S.rosterData.forEach(r=>{
+    if(!byDate[r.date])byDate[r.date]={date:r.date,day:r.day,entries:[]};
+    byDate[r.date].entries.push(r);
+  });
+  const sorted=Object.values(byDate).sort((a,b)=>a.date.localeCompare(b.date));
+  const rows=sorted.map(d=>`
+    <tr style="background:var(--bg2);">
+      <td style="padding:8px 10px;font-weight:700;font-size:13px;white-space:nowrap;">${new Date(d.date+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</td>
+      <td style="padding:8px 10px;font-size:11px;color:var(--t3);">${d.day}</td>
+      <td colspan="4" style="padding:8px 10px;">
+        ${d.entries.map(e=>`<div style="font-size:12px;margin-bottom:3px;">
+          <span class="b ${e.shift==='A'?'b-sa':e.shift==='B'?'b-sb':'b-sc'}" style="margin-right:5px;">${e.shift} ${e.direction}</span>
+          <span style="font-weight:600;">${e.staff_name}</span>
+          <span style="color:var(--t3);margin-left:5px;">${e.location||'⚠ no location'}</span>
+        </div>`).join('')}
+      </td>
+    </tr>`).join('');
+  const missing=S.rosterData.filter(r=>!r.location).map(r=>r.staff_name);
+  const uniqueMissing=[...new Set(missing)];
+  return`<div class="pg fu">
+    ${uniqueMissing.length?`<div class="err-box">⚠ ${uniqueMissing.length} staff missing location: <strong>${uniqueMissing.join(', ')}</strong>. Update their location in Staff Directory.</div>`:''}
+    <div class="ok-box">✓ Parsed ${S.rosterData.length} transport entries across ${sorted.length} days</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button class="btn btn-p" onclick="exportLogidisRoster()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;">${I.dl} Export Logidis Roster</button>
+      <button class="btn btn-s btn-sm2" onclick="S.rosterParsed=false;S.rosterData=[];render()">Re-upload</button>
+    </div>
+    <div class="card-title">Parsed roster preview</div>
+    <div class="tbl-wrap"><table class="vtable">
+      <thead><tr><th>Date</th><th>Day</th><th>Shift entries</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+  </div>`;
+}
+
+/* ── Logidis Validator ───────────────────────────── */
+function rLogidisTool(){
+  if(!S.logidisParsed){
+    return`<div class="pg fu">
+      <div class="info-box" style="background:var(--amber-d);border:1px solid rgba(245,158,11,.2);color:#FCD34D;">Upload the Logidis billing Excel. Each row will be matched against your staff profiles and declarations. Export an annotated Excel with validation results.</div>
+      <div class="upload-zone" onclick="document.getElementById('logidis-file').click()"
+        ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')"
+        ondrop="event.preventDefault();this.classList.remove('drag');handleLogidisFile(event.dataTransfer.files[0])">
+        <input type="file" id="logidis-file" accept=".xlsx,.xls" onchange="handleLogidisFile(this.files[0])"/>
+        <div class="upload-icon">${I.up}</div>
+        <div class="upload-title">Upload Logidis billing Excel</div>
+        <div class="upload-sub">Drag & drop or click to browse<br>Accepts .xlsx / .xls</div>
+      </div>
+    </div>`;
+  }
+  const matched=S.logidisValidated.filter(r=>r.status==='VALIDATED').length;
+  const query=S.logidisValidated.filter(r=>r.status==='QUERY').length;
+  const miss=S.logidisValidated.filter(r=>r.status==='NOT FOUND').length;
+  const rows=S.logidisValidated.map(r=>`<tr>
+    <td style="padding:8px 10px;white-space:nowrap;font-size:12px;">${r.date}</td>
+    <td style="padding:8px 10px;font-weight:600;font-size:13px;">${r.pax}</td>
+    <td style="padding:8px 10px;font-size:11px;color:var(--t3);">${r.direction}</td>
+    <td style="padding:8px 10px;font-size:11px;"><span class="${r.status==='VALIDATED'?'v-match':r.status==='QUERY'?'v-query':'v-miss'}">${r.status}</span></td>
+    <td style="padding:8px 10px;font-size:11px;color:var(--t3);">${r.note||''}</td>
+  </tr>`).join('');
+  return`<div class="pg fu">
+    <div class="bento g3" style="margin-bottom:16px;">
+      <div class="tile tile-sm"><div class="tv" style="color:#34D399;">${matched}</div><div class="tl">Validated</div></div>
+      <div class="tile tile-sm"><div class="tv" style="color:#FCD34D;">${query}</div><div class="tl">Query</div></div>
+      <div class="tile tile-sm"><div class="tv" style="color:#FB7185;">${miss}</div><div class="tl">Not found</div></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button class="btn btn-p" onclick="exportLogidisValidated()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;">${I.dl} Export Annotated Excel</button>
+      <button class="btn btn-s btn-sm2" onclick="S.logidisParsed=false;S.logidisRows=[];S.logidisValidated=[];render()">Re-upload</button>
+    </div>
+    <div class="card-title">Validation results</div>
+    <div class="tbl-wrap"><table class="vtable">
+      <thead><tr><th>Date</th><th>Staff</th><th>Direction</th><th>Status</th><th>Note</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+  </div>`;
+}
+
+/* ── Month-end ───────────────────────────────────── */
+function rMMonth(){
   const sum=anas().map(a=>{
     const d=uDecls(a.id);
     const logT=d.reduce((s,x)=>s+(x.leg_in==='logidis'?1:0)+(x.leg_out==='logidis'?1:0),0);
@@ -682,78 +1136,321 @@ function rMRecon(){
   const tL=sum.reduce((s,x)=>s+x.logT,0),tR=sum.reduce((s,x)=>s+x.refD,0),tS=sum.reduce((s,x)=>s+x.spC,0);
   const rows=sum.map(({a,logT,refD,spC})=>`<div class="recon-row">
     <div class="rav ${avc(a.color)}">${a.initials}</div>
-    <div style="flex:1;"><div style="font-size:13px;font-weight:700;">${a.name}</div><div style="font-size:11px;color:#94A3B8;">${spC} special trip${spC!==1?'s':''}</div></div>
-    <div style="display:flex;gap:20px;"><div class="rn"><div class="n">${logT}</div><div class="l">Logidis</div></div>
-      <div class="rn"><div class="n" style="color:#15803D;">${refD}</div><div class="l">Refund</div></div></div>
+    <div style="flex:1;"><div style="font-size:14px;font-weight:700;">${a.name}</div>
+      <div style="font-size:11px;color:var(--t3);margin-top:2px;">${spC} special trip${spC!==1?'s':''}</div></div>
+    <div style="display:flex;gap:22px;">
+      <div class="rn"><div class="n" style="color:#34D399;">${logT}</div><div class="l">Logidis</div></div>
+      <div class="rn"><div class="n" style="color:#FCD34D;">${refD}</div><div class="l">Refund</div></div>
+    </div>
   </div>`).join('');
-  return`<div class="sec">
-    <div class="met3"><div class="met"><div class="v">${tL}</div><div class="l">Logidis</div></div>
-      <div class="met"><div class="v" style="color:#15803D;">${tR}</div><div class="l">Refund days</div></div>
-      <div class="met"><div class="v" style="color:#BE185D;">${tS}</div><div class="l">Special</div></div></div>
-    <div class="card"><div class="card-title">Per analyst — ${fmtM()}</div>${rows||'<div class="empty">No data yet</div>'}</div>
+  return`<div class="pg fu">
+    <div class="bento g3" style="margin-bottom:18px;">
+      <div class="tile tile-sm"><div class="tv" style="color:#34D399;">${tL}</div><div class="tl">Logidis trips</div></div>
+      <div class="tile tile-sm"><div class="tv" style="color:#FCD34D;">${tR}</div><div class="tl">Refund days</div></div>
+      <div class="tile tile-sm"><div class="tv" style="color:#FB7185;">${tS}</div><div class="tl">Special trips</div></div>
+    </div>
+    <div class="card"><div class="card-body"><div class="card-title">Per analyst — ${fmtM()}</div>
+      ${rows||'<div class="empty-state"><div class="empty-text">No data yet</div></div>'}
+    </div></div>
     <div style="display:flex;gap:8px;margin-top:4px;">
-      <button class="btn btn-o" onclick="expCSV()">Export CSV</button>
-      <button class="btn btn-d" onclick="dbLoad();toast('Refreshed')">Refresh</button>
+      <button class="btn btn-s" onclick="expCSV()" style="flex:1;">Export CSV</button>
+      <button class="btn btn-p" onclick="dbLoad();toast('Refreshed')" style="flex:1;">↻ Refresh</button>
     </div>
   </div>`;
 }
 
-// Actions
-function setST(t){S.sTab=t;render();}
-function setMT(t){S.mTab=t;render();}
-function goAcct(){if(isMgr(S.user))S.mTab='account';else S.sTab='account';render();}
-function setDt(d){S.date=d;S.shift=null;S.choices={};S.dIn='';S.pIn='';S.dOut='';S.pOut='';S.uIn=false;S.uOut=false;S.udIn={};S.udOut={};render();}
-function setSh(k){S.shift=k;S.choices={};S.dIn='';S.pIn='';S.dOut='';S.pOut='';S.uIn=false;S.uOut=false;render();}
-function pick(id,c){S.choices[id]=c;render();}
-function togU(id){if(id==='in')S.uIn=!S.uIn;else S.uOut=!S.uOut;render();}
-function setUD(id,f,v){if(id==='in')S.udIn[f]=v;else S.udOut[f]=v;}
-function togSp(v){S.spShow=v;S.spForm={date:tod()};render();}
-function spf(k,v){S.spForm[k]=v;render();}
-function editEv(id){S.editEvId=id;render();}
-function canEd(){S.editEvId=null;render();}
-function stCP(){S.screen='chg';S.pinMode='old';S.pinBuf='';S.pinNew='';S.pinErr=false;render();}
-function logout(){LS.clearSess();S.user=null;S.screen='login';render();}
+/* ═══════════════════════════════════════════════════
+   STAFF FORM MODAL
+═══════════════════════════════════════════════════ */
+function openStaffForm(id){
+  if(id){
+    const s=S.staffProfiles.find(x=>x.id===id);
+    S.staffForm={...s};
+  }else{
+    S.staffForm={name:'',short_name:'',initials:'',color:'blue',role:'analyst',location:'',contact_no:'',team:'NM',needs_transport:true,active:true};
+  }
+  S.editStaff=id;
+  S.showStaffModal=true;
+  renderModal();
+}
 
-async function subD(){
-  const uid=S.user.id,sh=SHIFTS[S.shift];
-  const lIn=sh.legs.find(l=>l.id==='in'),lOut=sh.legs.find(l=>l.id==='out');
-  const row={
-    analyst_id:uid,date:S.date,shift:S.shift,
-    leg_in:lIn.provided?(S.choices['in']||null):'auto',
-    leg_out:lOut.provided?(S.choices['out']||null):'auto',
-    backdated:S.date!==tod(),
-    driver_name_in:S.dIn||null,car_plate_in:S.pIn||null,
-    driver_name_out:S.dOut||null,car_plate_out:S.pOut||null,
+function renderModal(){
+  const root=document.getElementById('modal-root');
+  if(!S.showStaffModal){root.innerHTML='';return;}
+  const f=S.staffForm;
+  const colors=['blue','teal','green','amber','coral','purple','pink','navy'];
+  root.innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">${S.editStaff?'Edit Staff':'Add Staff'}</div>
+      <div class="ig"><div class="inp-label">Full name</div><input class="inp" value="${f.name||''}" placeholder="e.g. Jean Pierre Dupont" oninput="S.staffForm.name=this.value"/></div>
+      <div class="irow">
+        <div style="flex:1;" class="ig"><div class="inp-label">Short name</div><input class="inp" style="padding:10px 12px;font-size:13px;" value="${f.short_name||''}" placeholder="e.g. Jean" oninput="S.staffForm.short_name=this.value"/></div>
+        <div style="flex:1;" class="ig"><div class="inp-label">Initials</div><input class="inp" style="padding:10px 12px;font-size:13px;text-transform:uppercase;" value="${f.initials||''}" placeholder="JP" maxlength="2" oninput="S.staffForm.initials=this.value.toUpperCase()"/></div>
+      </div>
+      <div class="ig"><div class="inp-label">Location / Area</div><input class="inp" value="${f.location||''}" placeholder="e.g. Phoenix, Vacoas…" oninput="S.staffForm.location=this.value"/></div>
+      <div class="ig"><div class="inp-label">Contact number</div><input class="inp" type="tel" value="${f.contact_no||''}" placeholder="e.g. 54201234" oninput="S.staffForm.contact_no=this.value"/></div>
+      <div class="irow">
+        <div style="flex:1;" class="ig"><div class="inp-label">Team</div>
+          <select class="inp" onchange="S.staffForm.team=this.value">
+            <option value="NM" ${f.team==='NM'?'selected':''}>SOC-NM</option>
+            <option value="SM" ${f.team==='SM'?'selected':''}>SOC-SM</option>
+          </select></div>
+        <div style="flex:1;" class="ig"><div class="inp-label">Role</div>
+          <select class="inp" onchange="S.staffForm.role=this.value">
+            <option value="analyst" ${f.role==='analyst'?'selected':''}>Analyst</option>
+            <option value="manager" ${f.role==='manager'?'selected':''}>Manager</option>
+          </select></div>
+      </div>
+      <div class="ig"><div class="inp-label">Avatar colour</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          ${colors.map(c=>`<div onclick="S.staffForm.color='${c}';renderModal()" style="width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid ${f.color===c?'#fff':'transparent'};" class="${avc(c)}"></div>`).join('')}
+        </div></div>
+      <div class="ig" style="display:flex;align-items:center;justify-content:space-between;">
+        <div><div style="font-size:14px;font-weight:600;">Needs transport</div><div style="font-size:12px;color:var(--t3);">Appears in roster and Logidis roster</div></div>
+        <div class="tog ${f.needs_transport?'on':''}" onclick="S.staffForm.needs_transport=!S.staffForm.needs_transport;renderModal()"><div class="tog-k"></div></div>
+      </div>
+      <button class="btn btn-p" onclick="saveStaffForm()" style="margin-bottom:10px;">Save</button>
+      ${S.editStaff?`<button class="btn ${f.active?'btn-r':'btn-g'}" onclick="toggleStaffActive()" style="margin-bottom:10px;">${f.active?'Deactivate staff':'Reactivate staff'}</button>`:''}
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>`;
+}
+
+function closeModal(){S.showStaffModal=false;S.staffForm={};S.editStaff=null;renderModal();}
+
+async function saveStaffForm(){
+  const f=S.staffForm;
+  if(!f.name?.trim()){toast('Name is required');return;}
+  const ok=await dbSaveStaff({...f,id:S.editStaff||undefined});
+  if(ok){closeModal();toast(S.editStaff?'Staff updated':'Staff added');render();}
+}
+
+async function toggleStaffActive(){
+  const newActive=!S.staffForm.active;
+  await dbToggleStaff(S.editStaff,newActive);
+  closeModal();
+  toast(newActive?'Staff reactivated':'Staff deactivated');
+}
+
+/* ═══════════════════════════════════════════════════
+   EXCEL PARSING — ROSTER
+═══════════════════════════════════════════════════ */
+function handleRosterFile(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const wb=XLSX.read(e.target.result,{type:'array'});
+    const parsed=[];
+    wb.SheetNames.forEach(sheetName=>{
+      const ws=wb.Sheets[sheetName];
+      const raw=XLSX.utils.sheet_to_json(ws,{header:1,defval:null});
+      parseRosterSheet(raw,parsed,sheetName);
+    });
+    S.rosterData=parsed;
+    S.rosterParsed=true;
+    render();
   };
-  const ok=await dbSaveDecl(row);
-  if(!ok)return;
-  const ps=[];
-  if(!lIn.provided&&S.uIn&&S.udIn.time&&S.udIn.reason)
-    ps.push(dbSaveEv({analyst_id:uid,date:S.date,event_time:S.udIn.time,direction:'in',reason:S.udIn.reason,driver_name:S.udIn.driver||null,car_plate:S.udIn.plate||null,reviewed:false,is_inline:true}));
-  if(!lOut.provided&&S.uOut&&S.udOut.time&&S.udOut.reason)
-    ps.push(dbSaveEv({analyst_id:uid,date:S.date,event_time:S.udOut.time,direction:'out',reason:S.udOut.reason,driver_name:S.udOut.driver||null,car_plate:S.udOut.plate||null,reviewed:false,is_inline:true}));
-  await Promise.all(ps);
-  S.choices={};S.shift=null;S.dIn='';S.pIn='';S.dOut='';S.pOut='';S.uIn=false;S.uOut=false;S.udIn={};S.udOut={};
-  toast(row.backdated?'Backdated entry saved':'Declaration submitted!');render();
+  reader.readAsArrayBuffer(file);
 }
 
-async function subSp(){
-  const f=S.spForm;
-  const ok=await dbSaveEv({analyst_id:S.user.id,date:f.date||tod(),event_time:f.time,direction:f.direction,reason:f.reason,driver_name:f.driver||null,car_plate:f.plate||null,reviewed:false,is_inline:false});
-  if(!ok)return;
-  S.spShow=false;S.spForm={};toast('Special trip logged');render();
+function parseRosterSheet(raw,parsed,sheetName){
+  // Find header row (contains "Date" or "DATE")
+  let headerRow=-1;
+  for(let i=0;i<raw.length;i++){
+    const r=raw[i];
+    if(r&&r.some(c=>typeof c==='string'&&c.toUpperCase().includes('DATE'))){headerRow=i;break;}
+  }
+  if(headerRow<0)return;
+  // Detect shift columns by scanning header rows
+  // For NM: shifts in columns 2-11 (3 cols each)
+  // For SM: shifts in columns 2-3
+  const isSM=sheetName.includes('SM')||sheetName.includes('sm');
+  for(let i=headerRow+1;i<raw.length;i++){
+    const row=raw[i];
+    if(!row||!row[1])continue;
+    let dateVal=row[1];
+    if(!dateVal)continue;
+    // Parse date
+    let dateStr='';
+    if(typeof dateVal==='number'){
+      const d=new Date(Math.round((dateVal-25569)*86400*1000));
+      dateStr=d.toISOString().split('T')[0];
+    }else{
+      const s=String(dateVal).trim();
+      // Try DD-MMM-YYYY or YYYY-MM-DD
+      const m=s.match(/(\d{1,2})[\/\-]([A-Za-z]+|\d{1,2})[\/\-](\d{2,4})/);
+      if(m){
+        const months={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+        const monthIdx=isNaN(m[2])?months[m[2].slice(0,3).toLowerCase()]:(parseInt(m[2])-1);
+        const year=m[3].length===2?2000+parseInt(m[3]):parseInt(m[3]);
+        const day=parseInt(m[1]);
+        const d=new Date(year,monthIdx,day);
+        dateStr=d.toISOString().split('T')[0];
+      }else if(s.match(/\d{4}-\d{2}-\d{2}/)){
+        dateStr=s.slice(0,10);
+      }
+    }
+    if(!dateStr)continue;
+    const dayVal=row[2]||'';
+    if(isSM){
+      // SM sheet: col 2 = Shift A (06:00-14:00), col 3 = Shift B (14:00-22:00)
+      [[2,'A','in'],[3,'B','out']].forEach(([col,shift,dir])=>{
+        const cell=row[col];
+        if(!cell||typeof cell!=='string')return;
+        const parts=cell.split('/').map(p=>p.trim());
+        if(!parts[0])return;
+        const staffName=parts[0].replace(/K$/,'').replace(/D$/,'').trim();
+        // Look up full name in profiles
+        const profile=findStaffByName(staffName)||findStaffByName(parts[0].trim());
+        const fullName=profile?profile.name:parts[0].trim();
+        const location=parts[1]||profile?.location||'';
+        const direction=shift==='A'?'IN':shift==='B'?'OUT':'';
+        parsed.push({date:dateStr,day:dayVal,shift,direction,staff_name:fullName,short_name:parts[0].trim(),location,contact_no:profile?.contact_no||'',team:'SM'});
+      });
+    }else{
+      // NM sheet: 3 slots per shift in cols 3,4,5 (A), 6,7,8 (B), 9,10,11 (C)
+      const shiftCols={A:[3,4,5],B:[6,7,8],C:[9,10,11]};
+      const shiftDir={A:'IN',B:'OUT',C:'IN/OUT'};
+      Object.entries(shiftCols).forEach(([shift,cols])=>{
+        cols.forEach(col=>{
+          const cell=row[col];
+          if(!cell||typeof cell!=='string')return;
+          const parts=cell.split('/').map(p=>p.trim());
+          if(!parts[0])return;
+          const profile=findStaffByName(parts[0]);
+          const fullName=profile?profile.name:parts[0];
+          const location=parts[1]||profile?.location||'';
+          // NM: Shift A=IN, Shift B=OUT, Shift C=IN+OUT (2 trips)
+          if(shift==='C'){
+            parsed.push({date:dateStr,day:dayVal,shift,direction:'IN',staff_name:fullName,short_name:parts[0],location,contact_no:profile?.contact_no||'',team:'NM'});
+            parsed.push({date:dateStr,day:dayVal,shift,direction:'OUT',staff_name:fullName,short_name:parts[0],location,contact_no:profile?.contact_no||'',team:'NM'});
+          }else{
+            parsed.push({date:dateStr,day:dayVal,shift,direction:shiftDir[shift],staff_name:fullName,short_name:parts[0],location,contact_no:profile?.contact_no||'',team:'NM'});
+          }
+        });
+      });
+    }
+  }
 }
 
-async function saveEd(id){
-  const el=document.getElementById('ed-'+id);
-  if(!el)return;
-  const ok=await dbUpdEv(id,{reason:el.value});
-  if(ok){S.editEvId=null;render();}
+/* ═══════════════════════════════════════════════════
+   EXCEL PARSING — LOGIDIS BILLING
+═══════════════════════════════════════════════════ */
+function handleLogidisFile(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const wb=XLSX.read(e.target.result,{type:'array'});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const raw=XLSX.utils.sheet_to_json(ws,{header:1,defval:null});
+    // Find header row
+    let headerIdx=-1;
+    for(let i=0;i<raw.length;i++){
+      const r=raw[i];
+      if(r&&r.some(c=>typeof c==='string'&&c.toLowerCase().includes('pax'))){headerIdx=i;break;}
+    }
+    if(headerIdx<0){toast('Could not find header row in file');return;}
+    S.logidisRows=raw.slice(headerIdx);
+    // Validate each row
+    S.logidisValidated=validateLogidisRows(S.logidisRows);
+    S.logidisParsed=true;
+    render();
+  };
+  reader.readAsArrayBuffer(file);
 }
 
-async function markRev(id){
-  const ok=await dbUpdEv(id,{reviewed:true});
-  if(ok){toast('Marked as reviewed');render();}
+function validateLogidisRows(rows){
+  const [headers,...data]=rows;
+  // Map column indices
+  const col=name=>headers.findIndex(h=>h&&h.toString().toLowerCase().includes(name.toLowerCase()));
+  const cDate=col('date'), cPax=col('pax'), cPickup=col('pick'), cDropoff=col('drop'), cTimeIn=col('time in'), cTimeOut=col('time out');
+  const results=[];
+  data.forEach(row=>{
+    if(!row||!row[cDate]||!row[cPax])return;
+    let dateStr='';
+    const rawDate=row[cDate];
+    if(typeof rawDate==='number'){
+      const d=new Date(Math.round((rawDate-25569)*86400*1000));
+      dateStr=d.toISOString().split('T')[0];
+    }else{
+      const s=String(rawDate).trim();
+      if(s.match(/\d{4}-\d{2}-\d{2}/))dateStr=s.slice(0,10);
+      else{const parts=s.split('/');if(parts.length===3)dateStr=`${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;}
+    }
+    const pax=String(row[cPax]||'').trim();
+    const timeIn=row[cTimeIn];
+    const timeOut=row[cTimeOut];
+    // Determine direction
+    const direction=timeIn&&String(timeIn).length>1?'IN (to work)':timeOut&&String(timeOut).length>1?'OUT (from work)':'Unknown';
+    const dirCode=direction.startsWith('IN')?'in':'out';
+    // Find staff
+    const profile=findStaffByName(pax);
+    let status='NOT FOUND', note='';
+    if(profile){
+      // Check declaration
+      const appUser=CONFIG.appUsers.find(u=>u.name===profile.name||(profile.app_user_id&&u.id===profile.app_user_id));
+      if(appUser){
+        const decl=dFor(appUser.id,dateStr);
+        if(decl){
+          const declaredLeg=dirCode==='in'?decl.leg_in:decl.leg_out;
+          if(declaredLeg==='logidis'){status='VALIDATED';note='Declared Logidis';}
+          else if(declaredLeg){status='QUERY';note=`Declared: ${declaredLeg}`;}
+          else{status='QUERY';note='Leg not declared';}
+        }else{status='QUERY';note='No declaration found';}
+      }else{
+        // NM team — just check they're in our system
+        status='VALIDATED';note='Staff confirmed in system';
+      }
+    }else{
+      status='NOT FOUND';note='Staff not in directory';
+    }
+    results.push({
+      date:dateStr,pax,pickup:row[cPickup]||'',dropoff:row[cDropoff]||'',
+      direction,status,note,
+      rawRow:row,
+    });
+  });
+  return results;
+}
+
+/* ═══════════════════════════════════════════════════
+   EXCEL EXPORTS
+═══════════════════════════════════════════════════ */
+function exportLogidisRoster(){
+  // Group by date, then by shift, then create clean roster
+  const wb=XLSX.utils.book_new();
+  const headers=['Date','Day','Shift','Direction','Time','Staff Name','Location','Contact No','Team'];
+  const shiftTimes={A:{IN:'06:00',OUT:'14:00'},B:{IN:'14:00',OUT:'22:00'},C:{IN:'22:00',OUT:'06:00'}};
+  const rows=S.rosterData.filter(r=>r.location).map(r=>{
+    const time=shiftTimes[r.shift]?.[r.direction]||'';
+    return[r.date,r.day,r.shift,r.direction,time,r.staff_name,r.location,r.contact_no||'',r.team];
+  });
+  rows.sort((a,b)=>a[0].localeCompare(b[0])||a[2].localeCompare(b[2])||a[3].localeCompare(b[3]));
+  const ws=XLSX.utils.aoa_to_sheet([headers,...rows]);
+  // Style header row width
+  ws['!cols']=[{wch:12},{wch:10},{wch:8},{wch:10},{wch:8},{wch:22},{wch:18},{wch:12},{wch:6}];
+  XLSX.utils.book_append_sheet(wb,ws,'Logidis Roster');
+  XLSX.writeFile(wb,`Logidis_Roster_${new Date().toISOString().slice(0,10)}.xlsx`);
+  toast('Logidis roster exported');
+}
+
+function exportLogidisValidated(){
+  const wb=XLSX.utils.book_new();
+  // Reconstruct original rows with added columns
+  const addedHeaders=['Matched Staff','Direction','Validation Status','Note'];
+  if(!S.logidisRows.length)return;
+  const [origHeaders,...origData]=S.logidisRows;
+  const newHeaders=[...origHeaders.map(h=>h||''),...addedHeaders];
+  const newRows=S.logidisValidated.map(r=>[
+    ...(r.rawRow.map(c=>c===null||c===undefined?'':c)),
+    r.pax, r.direction, r.status, r.note
+  ]);
+  const ws=XLSX.utils.aoa_to_sheet([newHeaders,...newRows]);
+  ws['!cols']=newHeaders.map((_,i)=>({wch:i>origHeaders.length-1?18:14}));
+  XLSX.utils.book_append_sheet(wb,ws,'Validation');
+  XLSX.writeFile(wb,`Logidis_Validated_${new Date().toISOString().slice(0,10)}.xlsx`);
+  toast('Annotated Excel exported');
 }
 
 function expCSV(){
@@ -775,13 +1472,72 @@ function expCSV(){
   a.click();URL.revokeObjectURL(url);toast('CSV downloaded');
 }
 
+/* ═══════════════════════════════════════════════════
+   ACTIONS
+═══════════════════════════════════════════════════ */
+function setST(t){S.sTab=t;render();}
+function setMT(t){S.mTab=t;S.toolView=null;render();}
+function goAcct(){if(isMgr(S.user)){S.mTab='account';S.toolView=null;}else S.sTab='account';render();}
+function setDt(d){S.date=d;S.shift=null;S.choices={};S.dIn='';S.pIn='';S.dOut='';S.pOut='';S.uIn=false;S.uOut=false;S.udIn={};S.udOut={};render();}
+function setSh(k){S.shift=k;S.choices={};S.dIn='';S.pIn='';S.dOut='';S.pOut='';S.uIn=false;S.uOut=false;render();}
+function pick(id,c){S.choices[id]=c;render();}
+function togU(id){if(id==='in')S.uIn=!S.uIn;else S.uOut=!S.uOut;render();}
+function setUD(id,f,v){if(id==='in')S.udIn[f]=v;else S.udOut[f]=v;}
+function togSp(v){S.spShow=v;S.spForm={date:tod()};render();}
+function spf(k,v){S.spForm[k]=v;render();}
+function editEv(id){S.editEvId=id;render();}
+function canEd(){S.editEvId=null;render();}
+function stCP(){S.screen='chg';S.pinMode='old';S.pinBuf='';S.pinNew='';S.pinErr=false;render();}
+function logout(){LS.clearSess();S.user=null;S.screen='login';S.query='';render();}
+
+async function subD(){
+  const uid=S.user.id,s=SH[S.shift];
+  const lIn=s.legs.find(l=>l.id==='in'),lOut=s.legs.find(l=>l.id==='out');
+  const row={analyst_id:uid,date:S.date,shift:S.shift,
+    leg_in:lIn.provided?(S.choices['in']||null):'auto',
+    leg_out:lOut.provided?(S.choices['out']||null):'auto',
+    backdated:S.date!==tod(),
+    driver_name_in:S.dIn||null,car_plate_in:S.pIn||null,
+    driver_name_out:S.dOut||null,car_plate_out:S.pOut||null,
+  };
+  const ok=await dbSaveDecl(row);if(!ok)return;
+  const ps=[];
+  if(!lIn.provided&&S.uIn&&S.udIn.time&&S.udIn.reason)
+    ps.push(dbSaveEv({analyst_id:uid,date:S.date,event_time:S.udIn.time,direction:'in',reason:S.udIn.reason,driver_name:S.udIn.driver||null,car_plate:S.udIn.plate||null,reviewed:false,is_inline:true}));
+  if(!lOut.provided&&S.uOut&&S.udOut.time&&S.udOut.reason)
+    ps.push(dbSaveEv({analyst_id:uid,date:S.date,event_time:S.udOut.time,direction:'out',reason:S.udOut.reason,driver_name:S.udOut.driver||null,car_plate:S.udOut.plate||null,reviewed:false,is_inline:true}));
+  await Promise.all(ps);
+  S.choices={};S.shift=null;S.dIn='';S.pIn='';S.dOut='';S.pOut='';S.uIn=false;S.uOut=false;S.udIn={};S.udOut={};
+  toast(row.backdated?'Backdated entry saved':'Declaration submitted');render();
+}
+
+async function subSp(){
+  const f=S.spForm;
+  const ok=await dbSaveEv({analyst_id:S.user.id,date:f.date||tod(),event_time:f.time,direction:f.direction,reason:f.reason,driver_name:f.driver||null,car_plate:f.plate||null,reviewed:false,is_inline:false});
+  if(!ok)return;
+  S.spShow=false;S.spForm={};toast('Special trip logged');render();
+}
+
+async function saveEd(id){
+  const el=document.getElementById('ed-'+id);if(!el)return;
+  const ok=await dbUpdEv(id,{reason:el.value});
+  if(ok){S.editEvId=null;render();}
+}
+
+async function markRev(id){
+  const ok=await dbUpdEv(id,{reviewed:true});
+  if(ok){toast('Marked as reviewed');render();}
+}
+
 function toast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2400);
+  setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-// Boot
+/* ═══════════════════════════════════════════════════
+   BOOT
+═══════════════════════════════════════════════════ */
 (function(){
   const s=LS.getSess();
   if(s){const u=byId(s.id);if(u){S.user=u;S.screen='app';dbLoad();return;}}
